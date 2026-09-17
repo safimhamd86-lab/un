@@ -50,6 +50,26 @@
   .mark-star { color: var(--primary); font-size: 20px; }
   .nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
+  /* Profile Button in Header */
+  .user-greeting-btn {
+    color: var(--gold);
+    font-weight: bold;
+    font-size: 13px;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    cursor: pointer;
+    transition: 0.2s var(--ease);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .user-greeting-btn:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: scale(1.03);
+  }
+
   .pulse-dot {
     width: 8px;
     height: 8px;
@@ -200,8 +220,8 @@
     width: 100%;
   }
 
-  /* Auth Modal */
-  #auth-overlay { 
+  /* Overlays (Auth & Profile) */
+  .overlay-bg { 
     position: fixed; 
     inset: 0; 
     background: rgba(0,0,0,0.85); 
@@ -214,7 +234,7 @@
     padding: 16px; 
     overflow-y: auto;
   }
-  .auth-box { 
+  .modal-box { 
     width: 100%; 
     max-width: 400px; 
     background: rgba(20,20,25,0.96); 
@@ -243,62 +263,23 @@
   .status-banned { background: rgba(239, 68, 68, 0.25); color: #f87171; border: 1px solid #ef4444; }
 
   /* Admin Action Buttons */
-  .btn-action-ban {
-    background: rgba(239, 68, 68, 0.25);
-    border: 1px solid #ef4444;
-    color: #ef4444;
-    padding: 5px 8px;
-    border-radius: 6px;
-    font-size: 11px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-  }
+  .btn-action-ban { background: rgba(239, 68, 68, 0.25); border: 1px solid #ef4444; color: #ef4444; padding: 5px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; transition: 0.2s; }
   .btn-action-ban:hover { background: #ef4444; color: #fff; }
-
-  .btn-action-unban {
-    background: rgba(34, 197, 94, 0.2);
-    border: 1px solid #22c55e;
-    color: #4ade80;
-    padding: 5px 8px;
-    border-radius: 6px;
-    font-size: 11px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-  }
+  .btn-action-unban { background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #4ade80; padding: 5px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; transition: 0.2s; }
   .btn-action-unban:hover { background: #22c55e; color: #111; }
-
-  .btn-action-punish {
-    background: rgba(245, 158, 11, 0.2);
-    border: 1px solid #f59e0b;
-    color: #f59e0b;
-    padding: 5px 8px;
-    border-radius: 6px;
-    font-size: 11px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-    margin: 0 2px;
-  }
+  .btn-action-punish { background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #f59e0b; padding: 5px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; transition: 0.2s; margin: 0 2px; }
   .btn-action-punish:hover { background: #f59e0b; color: #111; }
-  
-  .btn-action-delete {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid var(--glass-border);
-    color: #fff;
-    padding: 5px 8px;
-    border-radius: 6px;
-    font-size: 11px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-  }
+  .btn-action-delete { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--glass-border); color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; transition: 0.2s; }
   .btn-action-delete:hover { background: #ef4444; }
 
   .empty-state { text-align: center; padding: 25px 15px; color: var(--fg-faint); font-size: 14px; }
   .foot { text-align: center; padding: 24px 14px; margin-top: 30px; background: rgba(10, 9, 8, 0.95); border-top: 1px solid var(--glass-border); font-size: 13px; color: var(--fg-faint); line-height: 1.6; }
   #admin-panel { display: none; padding: 20px 16px; background: rgba(0,0,0,0.92); border: 1px solid var(--primary); border-radius: 14px; margin-top: 30px; }
+
+  /* Profile Details styling */
+  .profile-row { background: rgba(0,0,0,0.4); padding: 12px 14px; border-radius: 10px; border: 1px solid var(--glass-border); margin-bottom: 10px; }
+  .profile-row-label { color: var(--fg-soft); font-size: 12px; margin-bottom: 4px; }
+  .profile-row-value { font-size: 16px; font-weight: 700; color: var(--fg); }
 </style>
 </head>
 <body>
@@ -307,9 +288,9 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-  <!-- نافذة تسجيل الدخول والحساب -->
-  <div id="auth-overlay" style="display: none;">
-    <div class="auth-box">
+  <!-- نافذة تسجيل الدخول -->
+  <div id="auth-overlay" class="overlay-bg" style="display: none;">
+    <div class="modal-box">
       <h2 id="auth-title" style="text-align: center; margin-top:0; color: var(--primary); font-size: 20px;">تسجيل دخول الطالب</h2>
       
       <form class="upload-form" onsubmit="handleAuth(event)">
@@ -347,6 +328,19 @@
     </div>
   </div>
 
+  <!-- نافذة الملف الشخصي للطالب -->
+  <div id="profile-overlay" class="overlay-bg" style="display: none;" onclick="closeProfile(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <h2 style="text-align: center; color: var(--primary); margin-top: 0; margin-bottom: 20px;">الملف الشخصي 👤</h2>
+      
+      <div id="profile-content">
+        <!-- يتم حقن البيانات هنا برمجياً -->
+      </div>
+      
+      <button class="pill" style="width: 100%; background: #333; margin-top: 10px;" onclick="closeProfile()">إغلاق</button>
+    </div>
+  </div>
+
   <div class="stage">
     <video id="clip" autoplay loop muted playsinline disablepictureinpicture>
       <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/45567745-d826-44a2-a5ce-7ef670944e60.mp4" type="video/mp4">
@@ -358,7 +352,9 @@
     <div class="mark" onclick="showHome()"><span class="mark-star">✦</span> أبحاث الجامعة</div>
     
     <nav class="nav">
-      <div style="color: var(--gold); font-weight: bold; font-size: 13px;" id="user-greeting"></div>
+      <!-- زر الملف الشخصي -->
+      <div class="user-greeting-btn" onclick="showProfile()" id="user-greeting" title="عرض الملف الشخصي"></div>
+      
       <button class="pill admin-btn" onclick="checkPassword()">لوحة الإدارة ⚙️</button>
       <button class="pill logout-btn" onclick="logoutStudent()">خروج</button>
     </nav>
@@ -427,7 +423,7 @@
     <section id="admin-panel">
       <h2 style="color: var(--primary); text-align: center; margin-bottom: 24px; font-size: 22px;">لوحة الإدارة 👑</h2>
       
-      <!-- قسم المتواجدون الآن بالأسماء لايف -->
+      <!-- قسم المتواجدون الآن بالأسماء لايف (للإدارة فقط) -->
       <div class="card" style="border-color: var(--online-green); background: rgba(34, 197, 94, 0.05); margin-bottom: 24px;">
         <h3 style="color: #4ade80; margin: 0 0 10px; font-size: 16px; display:flex; align-items:center; gap:8px;">
           <span class="pulse-dot"></span> المتواجدون الآن على الموقع بالأسماء (<span id="admin-online-count">0</span>)
@@ -437,10 +433,10 @@
         </div>
       </div>
 
-      <!-- قسم إدارة الطلاب وحظر الحسابات -->
+      <!-- قسم إدارة الطلاب ولوحة الشرف -->
       <div class="card" style="border-color: var(--primary); margin-bottom: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
-          <h3 style="color: var(--gold); margin: 0; font-size: 16px;">📋 إدارة الطلاب، الحظر، ولوحة الشرف</h3>
+          <h3 style="color: var(--gold); margin: 0; font-size: 16px;">📋 إدارة الطلاب ولوحة الشرف</h3>
           <button class="pill" style="background: #dc2626; height: 34px; font-size: 12px;" onclick="resetAllScores()">
             🔄 تصفير نقاط الجميع وبدء تحدي جديد
           </button>
@@ -456,7 +452,7 @@
                 <th>رقم الهاتف</th>
                 <th>البريد الإلكتروني</th>
                 <th>النقاط</th>
-                <th>إجراءات الحظر والعقاب</th>
+                <th>إجراءات العقاب / الإدارة</th>
               </tr>
             </thead>
             <tbody id="students-table-body">
@@ -546,11 +542,13 @@
     let currentStudentData = null;
     let isRegisterMode = false;
     let activeLevel = 1;
+    
+    // متغيرات مجمعة لحل مشكلة تزامن الأونلاين والبيانات في الجدول
+    let allUsersList = [];
     let onlineUsersMap = {};
 
     auth.onAuthStateChanged((user) => {
       if (user) {
-        // فحص ما إذا كان الطالب محظوراً
         database.ref('users/' + user.uid).once('value', (snap) => {
           const val = snap.val();
           if (val && val.isBanned) {
@@ -565,7 +563,7 @@
       } else {
         currentUser = null;
         document.getElementById('auth-overlay').style.display = 'flex';
-        document.getElementById('user-greeting').innerText = '';
+        document.getElementById('user-greeting').innerHTML = '';
       }
     });
 
@@ -586,6 +584,7 @@
       });
     }
 
+    // جلب حالة المتصلين وتحديث الواجهة والجدول فوراً
     function listenToOnlinePresence() {
       database.ref('online_users').on('value', (snap) => {
         onlineUsersMap = snap.val() || {};
@@ -610,6 +609,26 @@
             }
           }
         }
+        // إعادة رسم الجدول عند تغير حالة أي متصل
+        renderStudentsTable();
+      });
+    }
+
+    // جلب بيانات الحسابات وتحديث المتصدرين والجدول
+    function listenToUsersData() {
+      database.ref('users').on('value', (snapshot) => {
+        let users = snapshot.val() || {};
+        allUsersList = [];
+        for (let id in users) {
+          allUsersList.push({ uid: id, ...users[id] });
+        }
+        allUsersList.sort((a, b) => (b.score || 0) - (a.score || 0));
+        
+        let activeList = allUsersList.filter(u => !u.isBanned);
+        renderLeaderboard(activeList);
+        
+        // إعادة رسم الجدول عند تحديث أي بيانات (نقاط، حظر، الخ)
+        renderStudentsTable();
       });
     }
 
@@ -658,7 +677,6 @@
       }
     }
 
-    // استعادة كلمة المرور عبر واتساب مباشر مع الليدر
     function handleForgotPassword() {
       const email = document.getElementById('auth-email').value.trim();
       const text = `السلام عليكم يا زياد، أنا نسيت كلمة المرور الخاصة بحسابي على منصة أبحاث الجامعة.\nبريدي الإلكتروني هو: ${email || '(لم يحدد)'}`;
@@ -674,11 +692,12 @@
             logoutStudent();
             return;
           }
-          document.getElementById('user-greeting').innerText = `👤 ${currentStudentData.name}`;
+          // وضع زر الملف الشخصي
+          document.getElementById('user-greeting').innerHTML = `👤 ${currentStudentData.name}`;
           setupPresence(uid, currentStudentData);
         }
       });
-      listenToLeaderboard();
+      listenToUsersData();
       listenToAlerts();
       listenToOnlinePresence();
     }
@@ -688,6 +707,38 @@
         database.ref('online_users/' + currentUser.uid).remove();
       }
       auth.signOut();
+    }
+
+    // عرض وإخفاء الملف الشخصي (Profile)
+    function showProfile() {
+      if (!currentStudentData) return;
+      const overlay = document.getElementById('profile-overlay');
+      const content = document.getElementById('profile-content');
+      
+      content.innerHTML = `
+        <div class="profile-row">
+          <div class="profile-row-label">الاسم الكامل</div>
+          <div class="profile-row-value">${currentStudentData.name}</div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-row-label">رقم الهاتف</div>
+          <div class="profile-row-value" style="direction: ltr;">${currentStudentData.phone || '-'}</div>
+        </div>
+        <div class="profile-row">
+          <div class="profile-row-label">البريد الإلكتروني</div>
+          <div class="profile-row-value" style="color: var(--primary);">${currentStudentData.email}</div>
+        </div>
+        <div class="profile-row" style="border-color: var(--gold); background: rgba(255, 215, 0, 0.05);">
+          <div class="profile-row-label">مجموع النقاط الحالي</div>
+          <div class="profile-row-value" style="font-size: 18px; color: var(--gold);">🏆 ${currentStudentData.score || 0} نقطة</div>
+        </div>
+      `;
+      overlay.style.display = 'flex';
+    }
+
+    function closeProfile(e) {
+      if (e && e.target.id !== 'profile-overlay' && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('profile-overlay').style.display = 'none';
     }
 
     function sendFeedbackToWhatsApp(e) {
@@ -706,24 +757,6 @@
       const url = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
       window.open(url, '_blank');
       document.getElementById('feedback-message').value = '';
-    }
-
-    function listenToLeaderboard() {
-      database.ref('users').on('value', (snapshot) => {
-        let users = snapshot.val();
-        let list = [];
-        for (let id in users) {
-          list.push({ uid: id, ...users[id] });
-        }
-        // ترتيب المتصدرين (استبعاد المحظورين من لوحة الشرف)
-        let activeList = list.filter(u => !u.isBanned);
-        activeList.sort((a, b) => (b.score || 0) - (a.score || 0));
-        renderLeaderboard(activeList);
-
-        // جدول الإدارة يعرض الجميع بما فيهم المحظورين
-        list.sort((a, b) => (b.score || 0) - (a.score || 0));
-        renderStudentsTable(list);
-      });
     }
 
     function renderLeaderboard(board) {
@@ -746,15 +779,20 @@
       });
     }
 
-    function renderStudentsTable(users) {
+    // دالة رسم الجدول الموحدة اللي بتحل مشكلة تزامن الداتا
+    function renderStudentsTable() {
       const tbody = document.getElementById('students-table-body');
+      if (!tbody) return;
       tbody.innerHTML = '';
-      if (users.length === 0) {
+      
+      if (allUsersList.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">لم يسجل أي طالب بعد.</td></tr>';
         return;
       }
-      users.forEach((u, index) => {
-        const isOnline = onlineUsersMap && onlineUsersMap[u.uid];
+      
+      allUsersList.forEach((u, index) => {
+        const isOnline = onlineUsersMap.hasOwnProperty(u.uid);
+        
         let statusBadge = '';
         if (u.isBanned) {
           statusBadge = `<span class="status-badge status-banned" title="سبب الحظر: ${u.banReason || 'بدون سبب'}">⛔ محظور</span>`;
@@ -786,7 +824,6 @@
       });
     }
 
-    // حظر حساب مع كتابة السبب
     function banStudent(uid, name) {
       const reason = prompt(`أدخل سبب حظر الطالب (${name}):`, "مخالفة القواعد أو الغش المتكرر");
       if (reason !== null && reason.trim() !== "") {
@@ -795,14 +832,12 @@
           banReason: reason.trim(),
           score: 0
         }).then(() => {
-          // طرد فوراً إذا كان متصلاً
           database.ref('online_users/' + uid).remove();
           alert(`تم حظر الطالب (${name}) بنجاح.\nالسبب: ${reason}`);
         }).catch(err => alert(err.message));
       }
     }
 
-    // فك الحظر
     function unbanStudent(uid, name) {
       if (confirm(`هل تريد فك الحظر عن الطالب (${name}) والسماح له بالدخول مجدداً؟`)) {
         database.ref('users/' + uid).update({
