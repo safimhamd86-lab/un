@@ -233,6 +233,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
           <h3 style="color: var(--gold); margin: 0; font-size: 16px;">📋 إدارة الطلاب، الحظر، ولوحة الشرف</h3>
           <button class="pill" style="background: #dc2626; height: 34px; font-size: 12px;" onclick="resetAllScores()">🔄 تصفير نقاط الجميع</button>
+          <button class="pill" style="background: #7c3aed; height: 34px; font-size: 12px;" onclick="migrateOldUsers()">📥 استيراد الطلاب القدامى (مرة واحدة)</button>
         </div>
         <div class="table-responsive">
           <table class="styled-table">
@@ -576,6 +577,28 @@
           database.ref('scores').update(updates).then(() => alert("🎯 تم تصفير نقاط الجميع!")).catch(err => alert('فشل: ' + err.message));
         });
       }
+    }
+
+    // One-time migration: copies old users/{uid} records (name/phone/email/score/isBanned)
+    // into the new separated profiles/scores/moderation nodes. Safe to run more than
+    // once — it won't overwrite a student's current score if they already have one
+    // in the new system (only fills in profile fields that already migrated).
+    function migrateOldUsers() {
+      if (!confirm('استيراد بيانات الطلاب من النظام القديم (users/) إلى النظام الجديد؟\nآمن تمامًا ولن يحذف أي بيانات قديمة.')) return;
+      database.ref('users').once('value').then(snap => {
+        const old = snap.val();
+        if (!old) { alert('لم يتم العثور على بيانات قديمة تحت users/ — إما أنها اتنقلت قبل كده أو المسار فاضي.'); return; }
+        let updates = {}, count = 0;
+        Object.entries(old).forEach(([uid, u]) => {
+          updates['profiles/' + uid] = { name: u.name || '', phone: u.phone || '', email: u.email || '', createdAt: u.createdAt || Date.now() };
+          updates['scores/' + uid] = u.score || 0;
+          updates['moderation/' + uid] = { isBanned: !!u.isBanned, banReason: u.banReason || null };
+          count++;
+        });
+        database.ref().update(updates)
+          .then(() => alert('✅ تم استيراد ' + count + ' طالب بنجاح! لوحة الشرف وجدول الطلاب هيتحدثوا فورًا.'))
+          .catch(err => alert('فشل الاستيراد: ' + err.message + '\n(تأكد إنك مسجل دخول بحساب الأدمن، وإن قواعد الأمان بتسمح بقراءة users/ للأدمن)'));
+      }).catch(err => alert('فشل قراءة البيانات القديمة: ' + err.message));
     }
 
     function listenToAlerts() {
