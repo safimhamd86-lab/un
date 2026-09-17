@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>منصة الدفعة التعليمية | قسم المساحة ونظم المعلومات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fg: #ffffff;
+    --fg-soft: rgba(255,255,255,.8);
+    --fg-faint: rgba(255,255,255,.5);
+    --shade: #0a0908;
+    --ease: cubic-bezier(.22,.61,.36,1);
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --glass-bg: rgba(20, 20, 25, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --gold: #ffd700;
+  }
+  
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; background: var(--shade); color: var(--fg); font-family: 'Cairo', sans-serif; overflow-x: hidden; }
+
+  .stage { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--shade); }
+  .stage video { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.05); object-fit: cover; filter: brightness(0.4) contrast(1.1); }
+  .veil { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(10,9,8,0.8) 0%, rgba(10,9,8,0.4) 50%, rgba(10,9,8,0.9) 100%); }
+
+  .chrome { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px clamp(16px, 4vw, 44px); background: rgba(10, 9, 8, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
+  .mark { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; color: var(--fg); cursor: pointer; }
+  .mark-star { color: var(--primary); font-size: 22px; }
+  .nav { display: flex; align-items: center; gap: clamp(10px, 1.8vw, 20px); }
+  
+  .pill { display: inline-flex; align-items: center; justify-content: center; height: 38px; padding: 0 16px; border-radius: 8px; background: var(--primary); color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: transform 0.3s var(--ease), background 0.3s var(--ease); }
+  .pill:hover { transform: translateY(-2px); background: var(--primary-hover); }
+  .leader-btn { background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); }
+  .logout-btn { background: #ef4444; }
+
+  #alert-banner { display: none; background: linear-gradient(135deg, #f59e0b, #d97706); color: #111; padding: 12px 20px; text-align: center; font-weight: 700; font-size: 16px; animation: pulseAlert 2s infinite; position: sticky; top: 71px; z-index: 39; }
+  @keyframes pulseAlert { 0% { opacity: 0.95; } 50% { opacity: 1; transform: scale(1.002); } 100% { opacity: 0.95; } }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; gap: 40px; }
+  .hero { text-align: center; padding: 20px 0 10px; }
+  .hero h1 { font-size: clamp(32px, 5vw, 56px); margin: 0 0 16px; line-height: 1.2; }
+  
+  .section-title { font-size: 28px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+  .section-title::before { content: ""; width: 8px; height: 28px; background: var(--primary); border-radius: 4px; }
+  
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .card { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 16px; padding: 24px; transition: transform 0.3s var(--ease); display: flex; flex-direction: column; }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  
+  .leaderboard-card { border: 2px solid var(--gold); background: rgba(255, 215, 0, 0.05); }
+  .rank-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--glass-border); }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-num { font-weight: 900; font-size: 18px; color: var(--gold); width: 30px; }
+  .rank-name { flex-grow: 1; font-weight: 600; font-size: 16px; }
+  .rank-score { background: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+
+  .upload-form { display: flex; flex-direction: column; gap: 14px; }
+  .input-group { display: flex; flex-direction: column; gap: 6px; }
+  .input-group label { font-size: 13px; color: var(--fg-soft); }
+  .input-group input, .input-group textarea, .input-group select { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 8px; padding: 10px; color: var(--fg); font-family: inherit; font-size: 14px; }
+
+  /* Auth Modal */
+  #auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .auth-box { width: 100%; max-width: 420px; background: rgba(20,20,25,0.95); border: 1px solid var(--primary); border-radius: 20px; padding: 30px; }
+
+  /* Table styling */
+  .styled-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; text-align: right; }
+  .styled-table th, .styled-table td { padding: 12px 14px; border-bottom: 1px solid var(--glass-border); }
+  .styled-table th { background: rgba(59, 130, 246, 0.2); color: var(--primary); }
+
+  .foot { text-align: center; padding: 30px 20px; margin-top: 40px; background: rgba(10, 9, 8, 0.9); border-top: 1px solid var(--glass-border); font-size: 14px; color: var(--fg-faint); }
+  #admin-panel { display: none; padding: 30px; background: rgba(0,0,0,0.9); border: 1px solid var(--primary); border-radius: 16px; margin-top: 40px; }
+</style>
+</head>
+<body>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <!-- نافذة تسجيل الدخول والحساب -->
+  <div id="auth-overlay" style="display: none;">
+    <div class="auth-box">
+      <h2 id="auth-title" style="text-align: center; margin-top:0; color: var(--primary);">تسجيل دخول الطالب</h2>
+      
+      <form class="upload-form" onsubmit="handleAuth(event)">
+        <div class="input-group" id="name-group">
+          <label>الاسم الكامل</label>
+          <input type="text" id="auth-name" placeholder="مثال: محمد أحمد">
+        </div>
+        
+        <div class="input-group" id="phone-group">
+          <label>رقم الهاتف (واتساب)</label>
+          <input type="tel" id="auth-phone" placeholder="01xxxxxxxxx">
+        </div>
+
+        <div class="input-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="auth-email" placeholder="student@example.com" required>
+        </div>
+        
+        <div class="input-group" id="pass-group">
+          <label>كلمة المرور (6 أحرف على الأقل)</label>
+          <input type="password" id="auth-pass" placeholder="••••••••" minlength="6">
+        </div>
+        
+        <div id="forgot-pass-wrap" style="text-align: left;">
+          <a href="javascript:void(0)" onclick="handleForgotPassword()" style="color: var(--fg-soft); font-size: 12px; text-decoration: underline;">نسيت كلمة المرور؟</a>
+        </div>
+
+        <button class="pill" type="submit" id="auth-submit-btn" style="width:100%; height:44px; margin-top:8px;">دخول</button>
+      </form>
+      
+      <p style="text-align:center; font-size:13px; margin-top:15px; color:var(--fg-soft);">
+        <span id="auth-switch-text">ليس لديك حساب؟</span>
+        <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-switch-link" style="color:var(--primary); font-weight:bold; margin-right:5px;">إنشاء حساب جديد</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="stage">
+    <video id="clip" autoplay loop muted playsinline disablepictureinpicture>
+      <source src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/45567745-d826-44a2-a5ce-7ef670944e60.mp4" type="video/mp4">
+    </video>
+    <div class="veil"></div>
+  </div>
+
+  <header class="chrome">
+    <div class="mark" onclick="showHome()"><span class="mark-star">✦</span> أبحاث الجامعة</div>
+    <nav class="nav">
+      <div style="color: var(--gold); font-weight: bold;" id="user-greeting"></div>
+      <a onclick="showHome()" style="cursor:pointer;">الرئيسية</a>
+      <button class="pill leader-btn" onclick="checkPassword()">Leader ⚙️</button>
+      <button class="pill logout-btn" onclick="logoutStudent()">خروج</button>
+    </nav>
+  </header>
+
+  <div id="alert-banner">⚠️ <span id="alert-text-content"></span></div>
+
+  <main class="container">
+    <section class="hero" id="hero-section">
+      <h1>منصة طلاب المساحة ونظم المعلومات</h1>
+      <p>منصتكم الموحدة للملخصات، بنك الأسئلة، ولوحة شرف المتفوقين.</p>
+    </section>
+
+    <!-- VIEW 1: Home -->
+    <div id="view-home">
+      <div class="grid" style="grid-template-columns: 2fr 1fr;">
+        <div>
+          <h2 class="section-title">المواد الدراسية</h2>
+          <div class="grid" id="subjects-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));"></div>
+        </div>
+        
+        <div>
+          <h2 class="section-title" style="color: var(--gold);">🏆 لوحة الشرف</h2>
+          <div class="card leaderboard-card" id="leaderboard-container">
+            <div class="empty-state">جاري تحميل البيانات...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: Subject Details -->
+    <div id="view-subject" style="display: none;">
+      <button class="pill" style="background:#333; margin-bottom:20px;" onclick="showHome()">⭠ رجوع</button>
+      <h2 class="section-title" id="subject-title">اسم المادة</h2>
+      <p id="subject-desc" style="color: var(--fg-soft); margin-bottom: 30px; font-size: 16px;"></p>
+      
+      <h3 style="color: var(--primary); border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">الملخصات والملفات</h3>
+      <div class="grid" id="subject-files" style="margin-bottom: 40px;"></div>
+
+      <h3 style="color: var(--primary); border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">بنك الأسئلة (MCQ)</h3>
+      <div class="grid" id="subject-quizzes" style="grid-template-columns: 1fr;"></div>
+    </div>
+
+    <!-- Admin Panel -->
+    <section id="admin-panel">
+      <h2 style="color: var(--primary); text-align: center; margin-bottom: 30px;">لوحة تحكم الليدر 👑</h2>
+      
+      <!-- جدول عرض الطلاب المسجلين متضمناً رقم الهاتف -->
+      <div class="card" style="border-color: var(--primary); margin-bottom: 30px;">
+        <h3 style="color: var(--gold); margin-top: 0;">📋 بيانات الطلاب المسجلين بالمنصة</h3>
+        <div style="overflow-x: auto;">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>اسم الطالب</th>
+                <th>رقم الهاتف</th>
+                <th>البريد الإلكتروني</th>
+                <th>النقاط</th>
+              </tr>
+            </thead>
+            <tbody id="students-table-body">
+              <tr><td colspan="5" style="text-align:center;">جاري جلب البيانات...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+        <div class="card" style="border-color: #f59e0b; background: transparent;">
+          <h3 style="color: #f59e0b;">إرسال تنبيه مباشر 🚨</h3>
+          <form class="upload-form" onsubmit="updateAlert(event)">
+            <input class="input-group" style="padding:10px;" id="alert-input" placeholder="نص التنبيه..." required>
+            <button class="pill" type="submit" style="background: #f59e0b; color:#111;">نشر لكل الدفعة</button>
+          </form>
+        </div>
+
+        <div class="card" style="border-color: #ff9800; background: transparent;">
+          <h3 style="color: #ff9800;">إضافة مادة</h3>
+          <form class="upload-form" onsubmit="addSubject(event)">
+            <input class="input-group" style="padding:10px;" id="new-subj-name" placeholder="اسم المادة" required>
+            <input class="input-group" style="padding:10px;" id="new-subj-desc" placeholder="وصف المادة" required>
+            <button class="pill" type="submit" style="background: #ff9800;">إضافة</button>
+          </form>
+        </div>
+
+        <div class="card" style="border-color: var(--primary); background: transparent;">
+          <h3>رفع ملف</h3>
+          <form class="upload-form" onsubmit="addFile(event)">
+            <select class="input-group" style="padding:10px;" id="file-subj-select" required></select>
+            <input class="input-group" style="padding:10px;" id="file-title" placeholder="عنوان الملف" required>
+            <input class="input-group" style="padding:10px;" id="file-link" type="url" placeholder="رابط الملف" required>
+            <button class="pill" type="submit">نشر الملف</button>
+          </form>
+        </div>
+
+        <div class="card" style="border-color: #4CAF50; background: transparent; grid-column: 1 / -1;">
+          <h3 style="color: #4CAF50;">إضافة سؤال (MCQ)</h3>
+          <form class="upload-form" onsubmit="addQuiz(event)">
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+              <select class="input-group" style="padding:10px; grid-column: 1/-1;" id="quiz-subj-select" required></select>
+              <input class="input-group" style="padding:10px; grid-column: 1/-1;" id="quiz-q" placeholder="السؤال" required>
+              <input class="input-group" style="padding:10px;" id="quiz-opt1" placeholder="خيار 1" required>
+              <input class="input-group" style="padding:10px;" id="quiz-opt2" placeholder="خيار 2" required>
+              <input class="input-group" style="padding:10px;" id="quiz-opt3" placeholder="خيار 3" required>
+              <input class="input-group" style="padding:10px;" id="quiz-opt4" placeholder="خيار 4" required>
+              <select class="input-group" style="padding:10px; grid-column: 1/-1;" id="quiz-ans" required>
+                <option value="1">الخيار الأول هو الصح</option>
+                <option value="2">الخيار الثاني هو الصح</option>
+                <option value="3">الخيار الثالث هو الصح</option>
+                <option value="4">الخيار الرابع هو الصح</option>
+              </select>
+            </div>
+            <button class="pill" type="submit" style="background: #4CAF50; max-width: 300px; margin: 0 auto; display: block;">نشر السؤال</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    تم التطوير والتنسيق لخدمة طلاب قسم المساحة ونظم المعلومات الجغرافية.<br>
+    إدارة وتنظيم: الليدر زياد سامح &copy; 2026
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB6FXWiprXlv6eoLhRIDrwyzKmR9cf3F8Y",
+      authDomain: "university-platform-f51a1.firebaseapp.com",
+      databaseURL: "https://university-platform-f51a1-default-rtdb.firebaseio.com",
+      projectId: "university-platform-f51a1",
+      storageBucket: "university-platform-f51a1.firebasestorage.app",
+      messagingSenderId: "160054277275",
+      appId: "1:160054277275:web:79482938bc46e33c52c23e"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+
+    let currentUser = null;
+    let currentStudentData = null;
+    let isRegisterMode = false;
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        currentUser = user;
+        document.getElementById('auth-overlay').style.display = 'none';
+        loadStudentData(user.uid);
+      } else {
+        currentUser = null;
+        document.getElementById('auth-overlay').style.display = 'flex';
+        document.getElementById('user-greeting').innerText = '';
+      }
+    });
+
+    function toggleAuthMode() {
+      isRegisterMode = !isRegisterMode;
+      document.getElementById('name-group').style.display = isRegisterMode ? 'flex' : 'none';
+      document.getElementById('phone-group').style.display = isRegisterMode ? 'flex' : 'none';
+      document.getElementById('forgot-pass-wrap').style.display = isRegisterMode ? 'none' : 'block';
+      document.getElementById('auth-title').innerText = isRegisterMode ? 'إنشاء حساب طالب جديد' : 'تسجيل دخول الطالب';
+      document.getElementById('auth-submit-btn').innerText = isRegisterMode ? 'تسجيل حساب' : 'دخول';
+      document.getElementById('auth-switch-text').innerText = isRegisterMode ? 'لديك حساب بالفعل؟' : 'ليس لديك حساب؟';
+      document.getElementById('auth-switch-link').innerText = isRegisterMode ? 'تسجيل الدخول' : 'إنشاء حساب جديد';
+    }
+
+    async function handleAuth(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value.trim();
+      const pass = document.getElementById('auth-pass').value;
+      const name = document.getElementById('auth-name').value.trim();
+      const phone = document.getElementById('auth-phone').value.trim();
+
+      if (isRegisterMode) {
+        if (!name) return alert("يرجى كتابة الاسم بالكامل.");
+        if (!phone || phone.length < 10) return alert("يرجى إدخال رقم هاتف صحيح.");
+
+        // التحقق من عدم تكرار رقم الهاتف لمنع تكرار الحسابات
+        const snapshot = await database.ref('users').orderByChild('phone').equalTo(phone).once('value');
+        if (snapshot.exists()) {
+          return alert("عذراً، هذا الرقم مسجل به حساب بالفعل! لا يمكن إنشاء أكثر من حساب لنفس الطالب.");
+        }
+
+        auth.createUserWithEmailAndPassword(email, pass)
+          .then((res) => {
+            return database.ref('users/' + res.user.uid).set({
+              name: name,
+              phone: phone,
+              email: email,
+              score: 0,
+              createdAt: Date.now()
+            });
+          })
+          .catch((err) => alert(err.message));
+      } else {
+        auth.signInWithEmailAndPassword(email, pass)
+          .catch((err) => alert(err.message));
+      }
+    }
+
+    // استعادة كلمة المرور عبر البريد الإلكتروني
+    function handleForgotPassword() {
+      const email = document.getElementById('auth-email').value.trim();
+      if (!email) {
+        return alert("يرجى كتابة بريدك الإلكتروني أولاً في خانة البريد ثم الضغط على 'نسيت كلمة المرور'.");
+      }
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني (" + email + "). يرجى مراجعة صندوق الوارد والبريد غير الهام (Spam).");
+        })
+        .catch((err) => alert(err.message));
+    }
+
+    function loadStudentData(uid) {
+      database.ref('users/' + uid).on('value', (snap) => {
+        currentStudentData = snap.val();
+        if (currentStudentData) {
+          document.getElementById('user-greeting').innerText = `مرحباً، ${currentStudentData.name} 🎯`;
+        }
+      });
+      listenToLeaderboard();
+      listenToAlerts();
+    }
+
+    function logoutStudent() {
+      auth.signOut();
+    }
+
+    function listenToLeaderboard() {
+      database.ref('users').on('value', (snapshot) => {
+        let users = snapshot.val();
+        let list = [];
+        for (let id in users) {
+          list.push({ uid: id, ...users[id] });
+        }
+        list.sort((a, b) => (b.score || 0) - (a.score || 0));
+        renderLeaderboard(list);
+        renderStudentsTable(list);
+      });
+    }
+
+    function renderLeaderboard(board) {
+      const container = document.getElementById('leaderboard-container');
+      container.innerHTML = '';
+      let top = board.slice(0, 5);
+      if (top.length === 0) {
+        container.innerHTML = '<div class="empty-state">لا يوجد نتائج مسجلة حتى الآن.</div>';
+        return;
+      }
+      top.forEach((s, idx) => {
+        let medal = idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : `${idx + 1}.`;
+        container.innerHTML += `
+          <div class="rank-row">
+            <div class="rank-num">${medal}</div>
+            <div class="rank-name">${s.name}</div>
+            <div class="rank-score">${s.score || 0} نقطة</div>
+          </div>
+        `;
+      });
+    }
+
+    function renderStudentsTable(users) {
+      const tbody = document.getElementById('students-table-body');
+      tbody.innerHTML = '';
+      if (users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">لم يسجل أي طالب بعد.</td></tr>';
+        return;
+      }
+      users.forEach((u, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td style="font-weight:bold;">${u.name}</td>
+            <td style="direction:ltr; text-align:right;">${u.phone || '-'}</td>
+            <td style="color:var(--primary);">${u.email}</td>
+            <td><strong>${u.score || 0}</strong></td>
+          </tr>
+        `;
+      });
+    }
+
+    function addPointToStudent() {
+      if (!currentUser) return;
+      database.ref('users/' + currentUser.uid + '/score').transaction((score) => (score || 0) + 1);
+    }
+
+    function listenToAlerts() {
+      database.ref('alert').on('value', (snapshot) => {
+        let msg = snapshot.val();
+        let banner = document.getElementById("alert-banner");
+        if (msg) {
+          document.getElementById("alert-text-content").innerText = msg;
+          banner.style.display = "block";
+        } else {
+          banner.style.display = "none";
+        }
+      });
+    }
+
+    let db = [
+      {
+        id: "subj-carto",
+        name: "علم الكارتوجرافيا",
+        desc: "دراسة مساقط الخرائط، تمثيل البيانات الجغرافية، وقواعد تصميم الخرائط.",
+        files: [{ title: "ملخص المساقط", desc: "شرح لأنواع المساقط.", link: "#" }],
+        quizzes: [
+          { q: "ما هو أفضل مسقط لخرائط الملاحة البحرية؟", opt1: "مركاتور", opt2: "المخروطي", opt3: "مولفد", opt4: "الأسطواني", ans: "1" },
+          { q: "ما هو العلم الذي يهتم برسم وتصميم الخرائط؟", opt1: "الجيولوجيا", opt2: "الكارتوجرافيا", opt3: "الاستشعار عن بعد", opt4: "المناخ", ans: "2" }
+        ]
+      }
+    ];
+
+    let currentSubjectId = null;
+
+    function showHome() {
+      document.getElementById('view-home').style.display = 'block';
+      document.getElementById('hero-section').style.display = 'block';
+      document.getElementById('view-subject').style.display = 'none';
+      currentSubjectId = null;
+      renderHome();
+      updateAdminSelects();
+    }
+
+    function renderHome() {
+      const grid = document.getElementById('subjects-grid');
+      grid.innerHTML = '';
+      db.forEach(subj => {
+        grid.innerHTML += `
+          <div class="card" style="cursor:pointer;" onclick="openSubject('${subj.id}')">
+            <h3 style="margin-top:0;">📚 ${subj.name}</h3>
+            <p>${subj.desc}</p>
+            <button class="pill" style="width:100%;">تصفح المادة</button>
+          </div>
+        `;
+      });
+    }
+
+    function openSubject(id) {
+      currentSubjectId = id;
+      const subj = db.find(s => s.id === id);
+      document.getElementById('view-home').style.display = 'none';
+      document.getElementById('hero-section').style.display = 'none';
+      document.getElementById('view-subject').style.display = 'block';
+      
+      document.getElementById('subject-title').innerText = "📚 " + subj.name;
+      document.getElementById('subject-desc').innerText = subj.desc;
+
+      const filesGrid = document.getElementById('subject-files');
+      filesGrid.innerHTML = subj.files.length === 0 ? '<div class="empty-state">لا توجد ملفات.</div>' : subj.files.map(f => `
+          <div class="card" style="border-left: 4px solid var(--primary);">
+            <h4 style="margin:0 0 10px;">${f.title}</h4>
+            <a href="${f.link}" target="_blank" class="pill" style="width:fit-content; height:32px;">تحميل</a>
+          </div>
+        `).join('');
+
+      const quizzesGrid = document.getElementById('subject-quizzes');
+      quizzesGrid.innerHTML = subj.quizzes.length === 0 ? '<div class="empty-state">لا توجد أسئلة.</div>' : subj.quizzes.map((q) => `
+          <div class="card" style="border: 1px dashed var(--primary);">
+            <p style="font-weight:600; font-size:16px;">س: ${q.q}</p>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+              <button class="pill" style="background: rgba(0,0,0,0.5); width: 100%; min-height: 40px;" onclick="checkAnswer(this, '1', '${q.ans}')">${q.opt1}</button>
+              <button class="pill" style="background: rgba(0,0,0,0.5); width: 100%; min-height: 40px;" onclick="checkAnswer(this, '2', '${q.ans}')">${q.opt2}</button>
+              <button class="pill" style="background: rgba(0,0,0,0.5); width: 100%; min-height: 40px;" onclick="checkAnswer(this, '3', '${q.ans}')">${q.opt3}</button>
+              <button class="pill" style="background: rgba(0,0,0,0.5); width: 100%; min-height: 40px;" onclick="checkAnswer(this, '4', '${q.ans}')">${q.opt4}</button>
+            </div>
+          </div>
+        `).join('');
+      window.scrollTo(0, 0);
+    }
+
+    function checkAnswer(btn, selected, correct) {
+      let buttons = btn.parentElement.querySelectorAll('button');
+      buttons.forEach(b => { b.disabled = true; b.style.opacity = "0.5"; b.style.cursor = "not-allowed"; }); 
+      if (selected === correct) {
+        btn.style.background = "#4CAF50"; btn.style.opacity = "1"; btn.innerHTML += " ✔️";
+        addPointToStudent();
+      } else {
+        btn.style.background = "#F44336"; btn.style.opacity = "1"; btn.innerHTML += " ❌";
+        buttons[parseInt(correct) - 1].style.background = "#4CAF50";
+        buttons[parseInt(correct) - 1].style.opacity = "1";
+        buttons[parseInt(correct) - 1].innerHTML += " (الصح)";
+      }
+    }
+
+    const ADMIN_PASSWORD = "admin"; 
+    function checkPassword() {
+      if (prompt("أدخل كلمة مرور الليدر:") === ADMIN_PASSWORD) {
+        document.getElementById("admin-panel").style.display = "block";
+        updateAdminSelects();
+        window.scrollTo({ top: document.getElementById("admin-panel").offsetTop, behavior: 'smooth' });
+      } else { alert("كلمة المرور خاطئة!"); }
+    }
+
+    function updateAlert(e) { 
+      e.preventDefault(); 
+      database.ref('alert').set(document.getElementById("alert-input").value);
+      e.target.reset(); 
+      alert("تم نشر التنبيه لكل الدفعة!");
+    }
+    
+    function updateAdminSelects() {
+      let opts = db.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      document.getElementById('file-subj-select').innerHTML = opts;
+      document.getElementById('quiz-subj-select').innerHTML = opts;
+    }
+
+    function addSubject(e) {
+      e.preventDefault();
+      db.push({ id: "subj-" + Date.now(), name: document.getElementById("new-subj-name").value, desc: document.getElementById("new-subj-desc").value, files: [], quizzes: [] });
+      e.target.reset();
+      alert("تمت إضافة المادة بنجاح!");
+      if (!currentSubjectId) renderHome();
+      updateAdminSelects();
+    }
+
+    function addFile(e) {
+      e.preventDefault();
+      let subj = db.find(s => s.id === document.getElementById("file-subj-select").value);
+      subj.files.push({ title: document.getElementById("file-title").value, link: document.getElementById("file-link").value });
+      e.target.reset();
+      alert("تم إضافة الملف للمادة!");
+      if (currentSubjectId === subj.id) openSubject(subj.id);
+      else if (!currentSubjectId) renderHome();
+    }
+
+    function addQuiz(e) {
+      e.preventDefault();
+      let subj = db.find(s => s.id === document.getElementById("quiz-subj-select").value);
+      subj.quizzes.push({ 
+        q: document.getElementById("quiz-q").value, 
+        opt1: document.getElementById("quiz-opt1").value, 
+        opt2: document.getElementById("quiz-opt2").value, 
+        opt3: document.getElementById("quiz-opt3").value, 
+        opt4: document.getElementById("quiz-opt4").value, 
+        ans: document.getElementById("quiz-ans").value 
+      });
+      e.target.reset();
+      alert("تم إضافة السؤال للمادة!");
+      if (currentSubjectId === subj.id) openSubject(subj.id);
+      else if (!currentSubjectId) renderHome();
+    }
+
+    window.onload = () => {
+      document.getElementById('name-group').style.display = 'none';
+      document.getElementById('phone-group').style.display = 'none';
+      showHome();
+    };
+  </script>
+</body>
+</html>
