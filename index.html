@@ -49,25 +49,13 @@
   .mark { display: flex; align-items: center; gap: 6px; font-size: 17px; font-weight: 700; color: var(--fg); cursor: pointer; }
   .mark-star { color: var(--primary); font-size: 20px; }
   .nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  
-  /* عداد المتصلين لايف */
-  .live-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(34, 197, 94, 0.15);
-    border: 1px solid rgba(34, 197, 94, 0.4);
-    color: #4ade80;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-  }
+
   .pulse-dot {
     width: 8px;
     height: 8px;
     background: var(--online-green);
     border-radius: 50%;
+    display: inline-block;
     animation: livePulse 1.5s infinite;
   }
   @keyframes livePulse {
@@ -118,7 +106,6 @@
   .hero h1 { font-size: clamp(22px, 6vw, 42px); margin: 0 0 10px; line-height: 1.3; font-weight: 900; }
   .hero p { font-size: 14px; margin: 0; color: var(--fg-soft); line-height: 1.6; }
   
-  /* Level Switcher Tabs */
   .level-tabs {
     display: flex;
     gap: 10px;
@@ -343,12 +330,6 @@
     <div class="mark" onclick="showHome()"><span class="mark-star">✦</span> أبحاث الجامعة</div>
     
     <nav class="nav">
-      <!-- عداد المتصلين لايف -->
-      <div class="live-indicator" title="عدد الطلاب المتواجدين على المنصة حالياً">
-        <span class="pulse-dot"></span>
-        <span id="live-online-counter">1 متصل الآن</span>
-      </div>
-
       <div style="color: var(--gold); font-weight: bold; font-size: 13px;" id="user-greeting"></div>
       <button class="pill admin-btn" onclick="checkPassword()">لوحة الإدارة ⚙️</button>
       <button class="pill logout-btn" onclick="logoutStudent()">خروج</button>
@@ -366,7 +347,6 @@
     <!-- VIEW 1: Home -->
     <div id="view-home">
       <div class="home-layout">
-        <!-- Subjects Column -->
         <div>
           <div class="level-tabs">
             <button class="level-tab-btn active" id="tab-lvl-1" onclick="switchLevel(1)">المستوى الأول 🎓</button>
@@ -419,7 +399,7 @@
     <section id="admin-panel">
       <h2 style="color: var(--primary); text-align: center; margin-bottom: 24px; font-size: 22px;">لوحة الإدارة 👑</h2>
       
-      <!-- قسم المتواجدون الآن بالأسماء لايف -->
+      <!-- قسم المتواجدون الآن بالأسماء لايف (للإدارة فقط) -->
       <div class="card" style="border-color: var(--online-green); background: rgba(34, 197, 94, 0.05); margin-bottom: 24px;">
         <h3 style="color: #4ade80; margin: 0 0 10px; font-size: 16px; display:flex; align-items:center; gap:8px;">
           <span class="pulse-dot"></span> المتواجدون الآن على الموقع بالأسماء (<span id="admin-online-count">0</span>)
@@ -429,7 +409,7 @@
         </div>
       </div>
 
-      <!-- قسم إدارة الطلاب الكامل ولوحة الشرف -->
+      <!-- قسم إدارة الطلاب ولوحة الشرف -->
       <div class="card" style="border-color: var(--primary); margin-bottom: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
           <h3 style="color: var(--gold); margin: 0; font-size: 16px;">📋 إدارة الطلاب ولوحة الشرف</h3>
@@ -552,16 +532,14 @@
       }
     });
 
-    // إعداد نظام التواجد المباشر (Online Presence System)
+    // تسجيل حالة الاتصال في قاعدة البيانات
     function setupPresence(uid, userData) {
       const myStatusRef = database.ref('online_users/' + uid);
       const connectedRef = database.ref('.info/connected');
 
       connectedRef.on('value', (snap) => {
         if (snap.val() === true) {
-          // لما يقفل أو النت يقطع يتم حذفه فوراً من السيرفر
           myStatusRef.onDisconnect().remove();
-          // تسجيله كمتصل حالياً
           myStatusRef.set({
             name: userData.name,
             phone: userData.phone || '',
@@ -572,33 +550,33 @@
       });
     }
 
-    // الاستماع المباشر لجميع المتصلين الآن
+    // الاستماع لقائمة المتصلين لاستخدامها في لوحة الإدارة وجدول الطلاب
     function listenToOnlinePresence() {
       database.ref('online_users').on('value', (snap) => {
         onlineUsersMap = snap.val() || {};
         const count = Object.keys(onlineUsersMap).length;
         
-        // تحديث العداد العلوي
-        document.getElementById('live-online-counter').innerText = `${count} متصل الآن`;
-        document.getElementById('admin-online-count').innerText = count;
+        // تحديث العداد الداخلي للوحة الإدارة فقط
+        const adminCountEl = document.getElementById('admin-online-count');
+        if (adminCountEl) adminCountEl.innerText = count;
 
-        // تحديث قائمة المتصلين في لوحة الإدارة
         const listDiv = document.getElementById('online-users-list');
-        listDiv.innerHTML = '';
-        if (count === 0) {
-          listDiv.innerHTML = '<div class="empty-state" style="padding: 10px;">لا يوجد طلاب متصلين حالياً.</div>';
-        } else {
-          for (let uid in onlineUsersMap) {
-            const u = onlineUsersMap[uid];
-            listDiv.innerHTML += `
-              <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); padding: 6px 12px; border-radius: 8px; color: #4ade80;">
-                🟢 <strong>${u.name}</strong> (${u.phone || 'بدون هاتف'})
-              </div>
-            `;
+        if (listDiv) {
+          listDiv.innerHTML = '';
+          if (count === 0) {
+            listDiv.innerHTML = '<div class="empty-state" style="padding: 10px;">لا يوجد طلاب متصلين حالياً.</div>';
+          } else {
+            for (let uid in onlineUsersMap) {
+              const u = onlineUsersMap[uid];
+              listDiv.innerHTML += `
+                <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); padding: 6px 12px; border-radius: 8px; color: #4ade80;">
+                  🟢 <strong>${u.name}</strong> (${u.phone || 'بدون هاتف'})
+                </div>
+              `;
+            }
           }
         }
 
-        // تحديث حالة الجدول إذا كان مفتوحاً
         if (currentUser) {
           database.ref('users').once('value', (s) => {
             let list = [];
