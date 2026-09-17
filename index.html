@@ -2,10 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>منصة الدفعة التعليمية | قسم المساحة ونظم المعلومات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -16,65 +16,183 @@
     --ease: cubic-bezier(.22,.61,.36,1);
     --primary: #3b82f6;
     --primary-hover: #2563eb;
-    --glass-bg: rgba(20, 20, 25, 0.6);
+    --glass-bg: rgba(20, 20, 25, 0.75);
     --glass-border: rgba(255, 255, 255, 0.15);
     --gold: #ffd700;
   }
   
+  * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body { margin: 0; background: var(--shade); color: var(--fg); font-family: 'Cairo', sans-serif; overflow-x: hidden; }
 
   .stage { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--shade); }
-  .stage video { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.05); object-fit: cover; filter: brightness(0.4) contrast(1.1); }
-  .veil { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(10,9,8,0.8) 0%, rgba(10,9,8,0.4) 50%, rgba(10,9,8,0.9) 100%); }
+  .stage video { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.05); object-fit: cover; filter: brightness(0.35) contrast(1.1); }
+  .veil { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(10,9,8,0.85) 0%, rgba(10,9,8,0.5) 50%, rgba(10,9,8,0.95) 100%); }
 
-  .chrome { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px clamp(16px, 4vw, 44px); background: rgba(10, 9, 8, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
-  .mark { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; color: var(--fg); cursor: pointer; }
-  .mark-star { color: var(--primary); font-size: 22px; }
-  .nav { display: flex; align-items: center; gap: clamp(10px, 1.8vw, 20px); }
+  /* Chrome Header */
+  .chrome { 
+    position: sticky; 
+    top: 0; 
+    z-index: 40; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    flex-wrap: wrap;
+    gap: 10px; 
+    padding: 12px 16px; 
+    background: rgba(10, 9, 8, 0.88); 
+    backdrop-filter: blur(14px); 
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--glass-border); 
+  }
+  .mark { display: flex; align-items: center; gap: 6px; font-size: 17px; font-weight: 700; color: var(--fg); cursor: pointer; }
+  .mark-star { color: var(--primary); font-size: 20px; }
+  .nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   
-  .pill { display: inline-flex; align-items: center; justify-content: center; height: 38px; padding: 0 16px; border-radius: 8px; background: var(--primary); color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: transform 0.3s var(--ease), background 0.3s var(--ease); }
-  .pill:hover { transform: translateY(-2px); background: var(--primary-hover); }
-  .leader-btn { background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); }
+  .pill { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    height: 36px; 
+    padding: 0 14px; 
+    border-radius: 8px; 
+    background: var(--primary); 
+    color: #fff; 
+    font-size: 13px; 
+    font-weight: 700; 
+    text-decoration: none; 
+    border: none; 
+    cursor: pointer; 
+    transition: transform 0.2s var(--ease), background 0.2s var(--ease); 
+    white-space: nowrap;
+    touch-action: manipulation;
+  }
+  .pill:active { transform: scale(0.97); }
+  .leader-btn { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); }
   .logout-btn { background: #ef4444; }
 
-  #alert-banner { display: none; background: linear-gradient(135deg, #f59e0b, #d97706); color: #111; padding: 12px 20px; text-align: center; font-weight: 700; font-size: 16px; animation: pulseAlert 2s infinite; position: sticky; top: 71px; z-index: 39; }
-  @keyframes pulseAlert { 0% { opacity: 0.95; } 50% { opacity: 1; transform: scale(1.002); } 100% { opacity: 0.95; } }
+  #alert-banner { 
+    display: none; 
+    background: linear-gradient(135deg, #f59e0b, #d97706); 
+    color: #111; 
+    padding: 10px 16px; 
+    text-align: center; 
+    font-weight: 700; 
+    font-size: 14px; 
+    animation: pulseAlert 2s infinite; 
+    position: sticky; 
+    top: 60px; 
+    z-index: 39; 
+  }
+  @keyframes pulseAlert { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.95; } }
 
-  .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; gap: 40px; }
-  .hero { text-align: center; padding: 20px 0 10px; }
-  .hero h1 { font-size: clamp(32px, 5vw, 56px); margin: 0 0 16px; line-height: 1.2; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px 14px; display: flex; flex-direction: column; gap: 24px; }
+  .hero { text-align: center; padding: 10px 0; }
+  .hero h1 { font-size: clamp(22px, 6vw, 42px); margin: 0 0 10px; line-height: 1.3; font-weight: 900; }
+  .hero p { font-size: 14px; margin: 0; color: var(--fg-soft); line-height: 1.6; }
   
-  .section-title { font-size: 28px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
-  .section-title::before { content: ""; width: 8px; height: 28px; background: var(--primary); border-radius: 4px; }
+  .section-title { font-size: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content: ""; width: 6px; height: 22px; background: var(--primary); border-radius: 3px; }
   
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-  .card { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 16px; padding: 24px; transition: transform 0.3s var(--ease); display: flex; flex-direction: column; }
-  .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  /* Main Grid */
+  .grid { display: grid; gap: 16px; }
+  .home-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
+
+  @media (min-width: 850px) {
+    .container { padding: 40px 20px; gap: 36px; }
+    .home-layout { grid-template-columns: 2fr 1fr; }
+    .chrome { padding: 14px clamp(16px, 4vw, 44px); }
+    .section-title { font-size: 24px; }
+  }
+
+  .card { 
+    background: var(--glass-bg); 
+    backdrop-filter: blur(16px); 
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); 
+    border-radius: 14px; 
+    padding: 18px; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
   
-  .leaderboard-card { border: 2px solid var(--gold); background: rgba(255, 215, 0, 0.05); }
-  .rank-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--glass-border); }
+  /* Leaderboard */
+  .leaderboard-card { border: 1.5px solid var(--gold); background: rgba(255, 215, 0, 0.04); }
+  .rank-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 6px; border-bottom: 1px solid var(--glass-border); }
   .rank-row:last-child { border-bottom: none; }
-  .rank-num { font-weight: 900; font-size: 18px; color: var(--gold); width: 30px; }
-  .rank-name { flex-grow: 1; font-weight: 600; font-size: 16px; }
-  .rank-score { background: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+  .rank-num { font-weight: 900; font-size: 16px; color: var(--gold); width: 28px; }
+  .rank-name { flex-grow: 1; font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px; }
+  .rank-score { background: var(--primary); padding: 3px 10px; border-radius: 16px; font-size: 12px; font-weight: bold; white-space: nowrap; }
 
-  .upload-form { display: flex; flex-direction: column; gap: 14px; }
+  /* Quiz Buttons */
+  .quiz-options { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+  @media (min-width: 600px) {
+    .quiz-options { grid-template-columns: 1fr 1fr; gap: 10px; }
+  }
+  .quiz-btn { 
+    background: rgba(255, 255, 255, 0.06); 
+    width: 100%; 
+    min-height: 44px; 
+    padding: 10px 14px; 
+    text-align: right; 
+    font-size: 14px; 
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    color: var(--fg);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .quiz-btn:active { background: rgba(255, 255, 255, 0.15); }
+
+  /* Forms */
+  .upload-form { display: flex; flex-direction: column; gap: 12px; }
   .input-group { display: flex; flex-direction: column; gap: 6px; }
   .input-group label { font-size: 13px; color: var(--fg-soft); }
-  .input-group input, .input-group textarea, .input-group select { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 8px; padding: 10px; color: var(--fg); font-family: inherit; font-size: 14px; }
+  .input-group input, .input-group textarea, .input-group select { 
+    background: rgba(0,0,0,0.5); 
+    border: 1px solid var(--glass-border); 
+    border-radius: 8px; 
+    padding: 11px 12px; 
+    color: var(--fg); 
+    font-family: inherit; 
+    font-size: 14px; 
+    width: 100%;
+  }
 
   /* Auth Modal */
-  #auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
-  .auth-box { width: 100%; max-width: 420px; background: rgba(20,20,25,0.95); border: 1px solid var(--primary); border-radius: 20px; padding: 30px; }
+  #auth-overlay { 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.85); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 100; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 16px; 
+    overflow-y: auto;
+  }
+  .auth-box { 
+    width: 100%; 
+    max-width: 400px; 
+    background: rgba(20,20,25,0.96); 
+    border: 1px solid var(--primary); 
+    border-radius: 18px; 
+    padding: 22px 18px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+  }
 
   /* Table styling */
-  .styled-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; text-align: right; }
-  .styled-table th, .styled-table td { padding: 12px 14px; border-bottom: 1px solid var(--glass-border); }
+  .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 12px; }
+  .styled-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: right; min-width: 500px; }
+  .styled-table th, .styled-table td { padding: 10px 12px; border-bottom: 1px solid var(--glass-border); }
   .styled-table th { background: rgba(59, 130, 246, 0.2); color: var(--primary); }
 
-  .foot { text-align: center; padding: 30px 20px; margin-top: 40px; background: rgba(10, 9, 8, 0.9); border-top: 1px solid var(--glass-border); font-size: 14px; color: var(--fg-faint); }
-  #admin-panel { display: none; padding: 30px; background: rgba(0,0,0,0.9); border: 1px solid var(--primary); border-radius: 16px; margin-top: 40px; }
+  .foot { text-align: center; padding: 24px 14px; margin-top: 30px; background: rgba(10, 9, 8, 0.95); border-top: 1px solid var(--glass-border); font-size: 13px; color: var(--fg-faint); line-height: 1.6; }
+  #admin-panel { display: none; padding: 20px 16px; background: rgba(0,0,0,0.92); border: 1px solid var(--primary); border-radius: 14px; margin-top: 30px; }
 </style>
 </head>
 <body>
@@ -86,7 +204,7 @@
   <!-- نافذة تسجيل الدخول والحساب -->
   <div id="auth-overlay" style="display: none;">
     <div class="auth-box">
-      <h2 id="auth-title" style="text-align: center; margin-top:0; color: var(--primary);">تسجيل دخول الطالب</h2>
+      <h2 id="auth-title" style="text-align: center; margin-top:0; color: var(--primary); font-size: 20px;">تسجيل دخول الطالب</h2>
       
       <form class="upload-form" onsubmit="handleAuth(event)">
         <div class="input-group" id="name-group">
@@ -113,12 +231,12 @@
           <a href="javascript:void(0)" onclick="handleForgotPassword()" style="color: var(--fg-soft); font-size: 12px; text-decoration: underline;">نسيت كلمة المرور؟</a>
         </div>
 
-        <button class="pill" type="submit" id="auth-submit-btn" style="width:100%; height:44px; margin-top:8px;">دخول</button>
+        <button class="pill" type="submit" id="auth-submit-btn" style="width:100%; height:42px; margin-top:6px; font-size: 15px;">دخول</button>
       </form>
       
-      <p style="text-align:center; font-size:13px; margin-top:15px; color:var(--fg-soft);">
+      <p style="text-align:center; font-size:13px; margin-top:14px; color:var(--fg-soft);">
         <span id="auth-switch-text">ليس لديك حساب؟</span>
-        <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-switch-link" style="color:var(--primary); font-weight:bold; margin-right:5px;">إنشاء حساب جديد</a>
+        <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-switch-link" style="color:var(--primary); font-weight:bold; margin-right:4px;">إنشاء حساب جديد</a>
       </p>
     </div>
   </div>
@@ -133,8 +251,7 @@
   <header class="chrome">
     <div class="mark" onclick="showHome()"><span class="mark-star">✦</span> أبحاث الجامعة</div>
     <nav class="nav">
-      <div style="color: var(--gold); font-weight: bold;" id="user-greeting"></div>
-      <a onclick="showHome()" style="cursor:pointer;">الرئيسية</a>
+      <div style="color: var(--gold); font-weight: bold; font-size: 13px;" id="user-greeting"></div>
       <button class="pill leader-btn" onclick="checkPassword()">Leader ⚙️</button>
       <button class="pill logout-btn" onclick="logoutStudent()">خروج</button>
     </nav>
@@ -150,12 +267,14 @@
 
     <!-- VIEW 1: Home -->
     <div id="view-home">
-      <div class="grid" style="grid-template-columns: 2fr 1fr;">
+      <div class="home-layout">
+        <!-- Subjects Column -->
         <div>
           <h2 class="section-title">المواد الدراسية</h2>
-          <div class="grid" id="subjects-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));"></div>
+          <div class="grid" id="subjects-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));"></div>
         </div>
         
+        <!-- Leaderboard Column -->
         <div>
           <h2 class="section-title" style="color: var(--gold);">🏆 لوحة الشرف</h2>
           <div class="card leaderboard-card" id="leaderboard-container">
@@ -167,25 +286,25 @@
 
     <!-- VIEW 2: Subject Details -->
     <div id="view-subject" style="display: none;">
-      <button class="pill" style="background:#333; margin-bottom:20px;" onclick="showHome()">⭠ رجوع</button>
+      <button class="pill" style="background:#333; margin-bottom:16px;" onclick="showHome()">⭠ رجوع للرئيسية</button>
       <h2 class="section-title" id="subject-title">اسم المادة</h2>
-      <p id="subject-desc" style="color: var(--fg-soft); margin-bottom: 30px; font-size: 16px;"></p>
+      <p id="subject-desc" style="color: var(--fg-soft); margin-bottom: 24px; font-size: 14px; line-height: 1.6;"></p>
       
-      <h3 style="color: var(--primary); border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">الملخصات والملفات</h3>
-      <div class="grid" id="subject-files" style="margin-bottom: 40px;"></div>
+      <h3 style="color: var(--primary); border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; font-size: 17px;">الملخصات والملفات</h3>
+      <div class="grid" id="subject-files" style="margin-bottom: 30px;"></div>
 
-      <h3 style="color: var(--primary); border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">بنك الأسئلة (MCQ)</h3>
-      <div class="grid" id="subject-quizzes" style="grid-template-columns: 1fr;"></div>
+      <h3 style="color: var(--primary); border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; font-size: 17px;">بنك الأسئلة (MCQ)</h3>
+      <div class="grid" id="subject-quizzes"></div>
     </div>
 
     <!-- Admin Panel -->
     <section id="admin-panel">
-      <h2 style="color: var(--primary); text-align: center; margin-bottom: 30px;">لوحة تحكم الليدر 👑</h2>
+      <h2 style="color: var(--primary); text-align: center; margin-bottom: 24px; font-size: 22px;">لوحة تحكم الليدر 👑</h2>
       
-      <!-- جدول عرض الطلاب المسجلين متضمناً رقم الهاتف -->
-      <div class="card" style="border-color: var(--primary); margin-bottom: 30px;">
-        <h3 style="color: var(--gold); margin-top: 0;">📋 بيانات الطلاب المسجلين بالمنصة</h3>
-        <div style="overflow-x: auto;">
+      <!-- جدول عرض الطلاب -->
+      <div class="card" style="border-color: var(--primary); margin-bottom: 24px;">
+        <h3 style="color: var(--gold); margin-top: 0; font-size: 16px;">📋 بيانات الطلاب المسجلين بالمنصة</h3>
+        <div class="table-responsive">
           <table class="styled-table">
             <thead>
               <tr>
@@ -203,9 +322,9 @@
         </div>
       </div>
 
-      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
         <div class="card" style="border-color: #f59e0b; background: transparent;">
-          <h3 style="color: #f59e0b;">إرسال تنبيه مباشر 🚨</h3>
+          <h3 style="color: #f59e0b; font-size: 16px;">إرسال تنبيه مباشر 🚨</h3>
           <form class="upload-form" onsubmit="updateAlert(event)">
             <input class="input-group" style="padding:10px;" id="alert-input" placeholder="نص التنبيه..." required>
             <button class="pill" type="submit" style="background: #f59e0b; color:#111;">نشر لكل الدفعة</button>
@@ -213,7 +332,7 @@
         </div>
 
         <div class="card" style="border-color: #ff9800; background: transparent;">
-          <h3 style="color: #ff9800;">إضافة مادة</h3>
+          <h3 style="color: #ff9800; font-size: 16px;">إضافة مادة</h3>
           <form class="upload-form" onsubmit="addSubject(event)">
             <input class="input-group" style="padding:10px;" id="new-subj-name" placeholder="اسم المادة" required>
             <input class="input-group" style="padding:10px;" id="new-subj-desc" placeholder="وصف المادة" required>
@@ -222,7 +341,7 @@
         </div>
 
         <div class="card" style="border-color: var(--primary); background: transparent;">
-          <h3>رفع ملف</h3>
+          <h3 style="font-size: 16px;">رفع ملف</h3>
           <form class="upload-form" onsubmit="addFile(event)">
             <select class="input-group" style="padding:10px;" id="file-subj-select" required></select>
             <input class="input-group" style="padding:10px;" id="file-title" placeholder="عنوان الملف" required>
@@ -231,24 +350,22 @@
           </form>
         </div>
 
-        <div class="card" style="border-color: #4CAF50; background: transparent; grid-column: 1 / -1;">
-          <h3 style="color: #4CAF50;">إضافة سؤال (MCQ)</h3>
+        <div class="card" style="border-color: #4CAF50; background: transparent;">
+          <h3 style="color: #4CAF50; font-size: 16px;">إضافة سؤال (MCQ)</h3>
           <form class="upload-form" onsubmit="addQuiz(event)">
-            <div class="grid" style="grid-template-columns: 1fr 1fr;">
-              <select class="input-group" style="padding:10px; grid-column: 1/-1;" id="quiz-subj-select" required></select>
-              <input class="input-group" style="padding:10px; grid-column: 1/-1;" id="quiz-q" placeholder="السؤال" required>
-              <input class="input-group" style="padding:10px;" id="quiz-opt1" placeholder="خيار 1" required>
-              <input class="input-group" style="padding:10px;" id="quiz-opt2" placeholder="خيار 2" required>
-              <input class="input-group" style="padding:10px;" id="quiz-opt3" placeholder="خيار 3" required>
-              <input class="input-group" style="padding:10px;" id="quiz-opt4" placeholder="خيار 4" required>
-              <select class="input-group" style="padding:10px; grid-column: 1/-1;" id="quiz-ans" required>
-                <option value="1">الخيار الأول هو الصح</option>
-                <option value="2">الخيار الثاني هو الصح</option>
-                <option value="3">الخيار الثالث هو الصح</option>
-                <option value="4">الخيار الرابع هو الصح</option>
-              </select>
-            </div>
-            <button class="pill" type="submit" style="background: #4CAF50; max-width: 300px; margin: 0 auto; display: block;">نشر السؤال</button>
+            <select class="input-group" style="padding:10px;" id="quiz-subj-select" required></select>
+            <input class="input-group" style="padding:10px;" id="quiz-q" placeholder="السؤال" required>
+            <input class="input-group" style="padding:10px;" id="quiz-opt1" placeholder="خيار 1" required>
+            <input class="input-group" style="padding:10px;" id="quiz-opt2" placeholder="خيار 2" required>
+            <input class="input-group" style="padding:10px;" id="quiz-opt3" placeholder="خيار 3" required>
+            <input class="input-group" style="padding:10px;" id="quiz-opt4" placeholder="خيار 4" required>
+            <select class="input-group" style="padding:10px;" id="quiz-ans" required>
+              <option value="1">الخيار الأول هو الصح</option>
+              <option value="2">الخيار الثاني هو الصح</option>
+              <option value="3">الخيار الثالث هو الصح</option>
+              <option value="4">الخيار الرابع هو الصح</option>
+            </select>
+            <button class="pill" type="submit" style="background: #4CAF50;">نشر السؤال</button>
           </form>
         </div>
       </div>
@@ -313,39 +430,35 @@
         if (!name) return alert("يرجى كتابة الاسم بالكامل.");
         if (!phone || phone.length < 10) return alert("يرجى إدخال رقم هاتف صحيح.");
 
-        // التحقق من عدم تكرار رقم الهاتف لمنع تكرار الحسابات
-        const snapshot = await database.ref('users').orderByChild('phone').equalTo(phone).once('value');
-        if (snapshot.exists()) {
-          return alert("عذراً، هذا الرقم مسجل به حساب بالفعل! لا يمكن إنشاء أكثر من حساب لنفس الطالب.");
-        }
+        try {
+          const snapshot = await database.ref('users').orderByChild('phone').equalTo(phone).once('value');
+          if (snapshot.exists()) {
+            return alert("عذراً، هذا الرقم مسجل به حساب بالفعل! لا يمكن إنشاء أكثر من حساب بنفس الرقم.");
+          }
 
-        auth.createUserWithEmailAndPassword(email, pass)
-          .then((res) => {
-            return database.ref('users/' + res.user.uid).set({
-              name: name,
-              phone: phone,
-              email: email,
-              score: 0,
-              createdAt: Date.now()
-            });
-          })
-          .catch((err) => alert(err.message));
+          const res = await auth.createUserWithEmailAndPassword(email, pass);
+          await database.ref('users/' + res.user.uid).set({
+            name: name,
+            phone: phone,
+            email: email,
+            score: 0,
+            createdAt: Date.now()
+          });
+        } catch (err) {
+          alert(err.message);
+        }
       } else {
-        auth.signInWithEmailAndPassword(email, pass)
-          .catch((err) => alert(err.message));
+        auth.signInWithEmailAndPassword(email, pass).catch((err) => alert(err.message));
       }
     }
 
-    // استعادة كلمة المرور عبر البريد الإلكتروني
     function handleForgotPassword() {
       const email = document.getElementById('auth-email').value.trim();
       if (!email) {
         return alert("يرجى كتابة بريدك الإلكتروني أولاً في خانة البريد ثم الضغط على 'نسيت كلمة المرور'.");
       }
       auth.sendPasswordResetEmail(email)
-        .then(() => {
-          alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني (" + email + "). يرجى مراجعة صندوق الوارد والبريد غير الهام (Spam).");
-        })
+        .then(() => alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني. يرجى التحقق من صندوق الوارد ومجلد Spam."))
         .catch((err) => alert(err.message));
     }
 
@@ -353,7 +466,7 @@
       database.ref('users/' + uid).on('value', (snap) => {
         currentStudentData = snap.val();
         if (currentStudentData) {
-          document.getElementById('user-greeting').innerText = `مرحباً، ${currentStudentData.name} 🎯`;
+          document.getElementById('user-greeting').innerText = `👤 ${currentStudentData.name}`;
         }
       });
       listenToLeaderboard();
@@ -382,7 +495,7 @@
       container.innerHTML = '';
       let top = board.slice(0, 5);
       if (top.length === 0) {
-        container.innerHTML = '<div class="empty-state">لا يوجد نتائج مسجلة حتى الآن.</div>';
+        container.innerHTML = '<div class="empty-state">لا توجد نتائج حتى الآن.</div>';
         return;
       }
       top.forEach((s, idx) => {
@@ -391,7 +504,7 @@
           <div class="rank-row">
             <div class="rank-num">${medal}</div>
             <div class="rank-name">${s.name}</div>
-            <div class="rank-score">${s.score || 0} نقطة</div>
+            <div class="rank-score">${s.score || 0} ن</div>
           </div>
         `;
       });
@@ -440,10 +553,10 @@
         id: "subj-carto",
         name: "علم الكارتوجرافيا",
         desc: "دراسة مساقط الخرائط، تمثيل البيانات الجغرافية، وقواعد تصميم الخرائط.",
-        files: [{ title: "ملخص المساقط", desc: "شرح لأنواع المساقط.", link: "#" }],
+        files: [{ title: "ملخص مساقط الخرائط", desc: "شرح شامل لأنواع المساقط وتطبيقاتها.", link: "#" }],
         quizzes: [
-          { q: "ما هو أفضل مسقط لخرائط الملاحة البحرية؟", opt1: "مركاتور", opt2: "المخروطي", opt3: "مولفد", opt4: "الأسطواني", ans: "1" },
-          { q: "ما هو العلم الذي يهتم برسم وتصميم الخرائط؟", opt1: "الجيولوجيا", opt2: "الكارتوجرافيا", opt3: "الاستشعار عن بعد", opt4: "المناخ", ans: "2" }
+          { q: "ما هو المسقط الأنسب لخرائط الملاحة البحرية لكونه يحفظ الاتجاهات والزوايا؟", opt1: "مسقط مركاتور", opt2: "المسقط المخروطي", opt3: "مسقط مولفد", opt4: "المسقط المستوي", ans: "1" },
+          { q: "العلم والفن والتقنية المعنية بصناعة الخرائط ودراستها يُعرف بـ:", opt1: "الجيولوجيا", opt2: "علم الكارتوجرافيا", opt3: "الاستشعار عن بعد", opt4: "الجيومورفولوجيا", ans: "2" }
         ]
       }
     ];
@@ -465,9 +578,9 @@
       db.forEach(subj => {
         grid.innerHTML += `
           <div class="card" style="cursor:pointer;" onclick="openSubject('${subj.id}')">
-            <h3 style="margin-top:0;">📚 ${subj.name}</h3>
-            <p>${subj.desc}</p>
-            <button class="pill" style="width:100%;">تصفح المادة</button>
+            <h3 style="margin:0 0 8px; font-size:17px;">📚 ${subj.name}</h3>
+            <p style="font-size:13px; color:var(--fg-soft); margin:0 0 16px; line-height:1.5;">${subj.desc}</p>
+            <button class="pill" style="width:100%; height:38px;">تصفح المادة</button>
           </div>
         `;
       });
@@ -484,22 +597,22 @@
       document.getElementById('subject-desc').innerText = subj.desc;
 
       const filesGrid = document.getElementById('subject-files');
-      filesGrid.innerHTML = subj.files.length === 0 ? '<div class="empty-state">لا توجد ملفات.</div>' : subj.files.map(f => `
-          <div class="card" style="border-left: 4px solid var(--primary);">
-            <h4 style="margin:0 0 10px;">${f.title}</h4>
-            <a href="${f.link}" target="_blank" class="pill" style="width:fit-content; height:32px;">تحميل</a>
+      filesGrid.innerHTML = subj.files.length === 0 ? '<div class="empty-state">لا توجد ملفات حالياً.</div>' : subj.files.map(f => `
+          <div class="card" style="border-right: 4px solid var(--primary); padding:14px;">
+            <h4 style="margin:0 0 10px; font-size:15px;">${f.title}</h4>
+            <a href="${f.link}" target="_blank" class="pill" style="width:fit-content; height:32px;">تحميل الملف</a>
           </div>
         `).join('');
 
       const quizzesGrid = document.getElementById('subject-quizzes');
-      quizzesGrid.innerHTML = subj.quizzes.length === 0 ? '<div class="empty-state">لا توجد أسئلة.</div>' : subj.quizzes.map((q) => `
-          <div class="card" style="border: 1px dashed var(--primary);">
-            <p style="font-weight:600; font-size:16px;">س: ${q.q}</p>
-            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="pill" style="background: rgba(0,0,0,0.5); width: 100%; min-height: 40px;" onclick="checkAnswer(this, '1', '${q.ans}')">${q.opt1}</button>
-              <button class="pill" style="background: rgba(0,0,0,0.5); width: 100%; min-height: 40px;" onclick="checkAnswer(this, '2', '${q.ans}')">${q.opt2}</button>
-              <button class="pill" style="background: rgba(0,0,0,0.5); width: 100%; min-height: 40px;" onclick="checkAnswer(this, '3', '${q.ans}')">${q.opt3}</button>
-              <button class="pill" style="background: rgba(0,0,0,0.5); width: 100%; min-height: 40px;" onclick="checkAnswer(this, '4', '${q.ans}')">${q.opt4}</button>
+      quizzesGrid.innerHTML = subj.quizzes.length === 0 ? '<div class="empty-state">لا توجد أسئلة حالياً.</div>' : subj.quizzes.map((q) => `
+          <div class="card" style="border: 1px dashed var(--glass-border); padding:16px;">
+            <p style="font-weight:700; font-size:15px; margin:0 0 12px; line-height:1.5;">س: ${q.q}</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" onclick="checkAnswer(this, '1', '${q.ans}')">${q.opt1}</button>
+              <button class="quiz-btn" onclick="checkAnswer(this, '2', '${q.ans}')">${q.opt2}</button>
+              <button class="quiz-btn" onclick="checkAnswer(this, '3', '${q.ans}')">${q.opt3}</button>
+              <button class="quiz-btn" onclick="checkAnswer(this, '4', '${q.ans}')">${q.opt4}</button>
             </div>
           </div>
         `).join('');
@@ -510,13 +623,20 @@
       let buttons = btn.parentElement.querySelectorAll('button');
       buttons.forEach(b => { b.disabled = true; b.style.opacity = "0.5"; b.style.cursor = "not-allowed"; }); 
       if (selected === correct) {
-        btn.style.background = "#4CAF50"; btn.style.opacity = "1"; btn.innerHTML += " ✔️";
+        btn.style.background = "#15803d"; 
+        btn.style.borderColor = "#22c55e";
+        btn.style.opacity = "1"; 
+        btn.innerHTML += " ✔️";
         addPointToStudent();
       } else {
-        btn.style.background = "#F44336"; btn.style.opacity = "1"; btn.innerHTML += " ❌";
-        buttons[parseInt(correct) - 1].style.background = "#4CAF50";
+        btn.style.background = "#b91c1c"; 
+        btn.style.borderColor = "#ef4444";
+        btn.style.opacity = "1"; 
+        btn.innerHTML += " ❌";
+        buttons[parseInt(correct) - 1].style.background = "#15803d";
+        buttons[parseInt(correct) - 1].style.borderColor = "#22c55e";
         buttons[parseInt(correct) - 1].style.opacity = "1";
-        buttons[parseInt(correct) - 1].innerHTML += " (الصح)";
+        buttons[parseInt(correct) - 1].innerHTML += " (الإجابة الصحيحة)";
       }
     }
 
