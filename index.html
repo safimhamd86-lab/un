@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>منصة الدفعة التعليمية | قسم المساحة ونظم المعلومات</title>
-<meta name="description" content="منصة طلاب قسم المساحة ونظم المعلومات الجغرافية — ملخصات، بنك أسئلة، ولوحة شرف.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -22,6 +21,7 @@
     --gold: #ffd700;
     --online-green: #22c55e;
   }
+  
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body { margin: 0; background: var(--shade); color: var(--fg); font-family: 'Cairo', sans-serif; overflow-x: hidden; }
@@ -30,35 +30,113 @@
   .stage video { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.05); object-fit: cover; filter: brightness(0.35) contrast(1.1); }
   .veil { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(10,9,8,0.85) 0%, rgba(10,9,8,0.5) 50%, rgba(10,9,8,0.95) 100%); }
 
-  .chrome { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 12px 16px; background: rgba(10, 9, 8, 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--glass-border); }
+  /* Chrome Header */
+  .chrome { 
+    position: sticky; 
+    top: 0; 
+    z-index: 40; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    flex-wrap: wrap;
+    gap: 10px; 
+    padding: 12px 16px; 
+    background: rgba(10, 9, 8, 0.88); 
+    backdrop-filter: blur(14px); 
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--glass-border); 
+  }
   .mark { display: flex; align-items: center; gap: 6px; font-size: 17px; font-weight: 700; color: var(--fg); cursor: pointer; }
   .mark-star { color: var(--primary); font-size: 20px; }
   .nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
-  .pulse-dot { width: 8px; height: 8px; background: var(--online-green); border-radius: 50%; display: inline-block; animation: livePulse 1.5s infinite; }
-  @keyframes livePulse { 0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--online-green);
+    border-radius: 50%;
+    display: inline-block;
+    animation: livePulse 1.5s infinite;
+  }
+  @keyframes livePulse {
+    0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  }
 
-  .pill { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 14px; border-radius: 8px; background: var(--primary); color: #fff; font-size: 13px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: transform 0.2s var(--ease), background 0.2s var(--ease); white-space: nowrap; touch-action: manipulation; }
+  .pill { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    height: 36px; 
+    padding: 0 14px; 
+    border-radius: 8px; 
+    background: var(--primary); 
+    color: #fff; 
+    font-size: 13px; 
+    font-weight: 700; 
+    text-decoration: none; 
+    border: none; 
+    cursor: pointer; 
+    transition: transform 0.2s var(--ease), background 0.2s var(--ease); 
+    white-space: nowrap;
+    touch-action: manipulation;
+  }
   .pill:active { transform: scale(0.97); }
-  .pill:disabled{opacity:.5;cursor:not-allowed}
   .admin-btn { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); }
   .logout-btn { background: #ef4444; }
 
-  #alert-banner { display: none; background: linear-gradient(135deg, #f59e0b, #d97706); color: #111; padding: 10px 16px; text-align: center; font-weight: 700; font-size: 14px; animation: pulseAlert 2s infinite; position: sticky; top: 60px; z-index: 39; }
+  #alert-banner { 
+    display: none; 
+    background: linear-gradient(135deg, #f59e0b, #d97706); 
+    color: #111; 
+    padding: 10px 16px; 
+    text-align: center; 
+    font-weight: 700; 
+    font-size: 14px; 
+    animation: pulseAlert 2s infinite; 
+    position: sticky; 
+    top: 60px; 
+    z-index: 39; 
+  }
   @keyframes pulseAlert { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.95; } }
 
   .container { max-width: 1200px; margin: 0 auto; padding: 20px 14px; display: flex; flex-direction: column; gap: 24px; }
   .hero { text-align: center; padding: 10px 0; }
   .hero h1 { font-size: clamp(22px, 6vw, 42px); margin: 0 0 10px; line-height: 1.3; font-weight: 900; }
   .hero p { font-size: 14px; margin: 0; color: var(--fg-soft); line-height: 1.6; }
-
-  .level-tabs { display: flex; gap: 10px; background: rgba(0,0,0,0.4); padding: 6px; border-radius: 12px; border: 1px solid var(--glass-border); margin-bottom: 20px; }
-  .level-tab-btn { flex: 1; padding: 10px 16px; border-radius: 8px; border: none; background: transparent; color: var(--fg-soft); font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s var(--ease); }
-  .level-tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+  
+  .level-tabs {
+    display: flex;
+    gap: 10px;
+    background: rgba(0,0,0,0.4);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    margin-bottom: 20px;
+  }
+  .level-tab-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--fg-soft);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+  }
+  .level-tab-btn.active {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  }
 
   .section-title { font-size: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
   .section-title::before { content: ""; width: 6px; height: 22px; background: var(--primary); border-radius: 3px; }
-
+  
   .grid { display: grid; gap: 16px; }
   .home-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
 
@@ -69,8 +147,18 @@
     .section-title { font-size: 24px; }
   }
 
-  .card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
-
+  .card { 
+    background: var(--glass-bg); 
+    backdrop-filter: blur(16px); 
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); 
+    border-radius: 14px; 
+    padding: 18px; 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+  
   .leaderboard-card { border: 1.5px solid var(--gold); background: rgba(255, 215, 0, 0.04); }
   .rank-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 6px; border-bottom: 1px solid var(--glass-border); }
   .rank-row:last-child { border-bottom: none; }
@@ -79,47 +167,138 @@
   .rank-score { background: var(--primary); padding: 3px 10px; border-radius: 16px; font-size: 12px; font-weight: bold; white-space: nowrap; }
 
   .quiz-options { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
-  @media (min-width: 600px) { .quiz-options { grid-template-columns: 1fr 1fr; gap: 10px; } }
-  .quiz-btn { background: rgba(255, 255, 255, 0.06); width: 100%; min-height: 44px; padding: 10px 14px; text-align: right; font-size: 14px; border-radius: 8px; border: 1px solid var(--glass-border); color: var(--fg); cursor: pointer; font-family: inherit; transition: background 0.2s; }
+  @media (min-width: 600px) {
+    .quiz-options { grid-template-columns: 1fr 1fr; gap: 10px; }
+  }
+  .quiz-btn { 
+    background: rgba(255, 255, 255, 0.06); 
+    width: 100%; 
+    min-height: 44px; 
+    padding: 10px 14px; 
+    text-align: right; 
+    font-size: 14px; 
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    color: var(--fg);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
   .quiz-btn:active { background: rgba(255, 255, 255, 0.15); }
-  .answered-note{font-size:12px;color:var(--online-green);margin-top:10px;font-weight:700}
 
   .upload-form { display: flex; flex-direction: column; gap: 12px; }
   .input-group { display: flex; flex-direction: column; gap: 6px; }
   .input-group label { font-size: 13px; color: var(--fg-soft); }
-  .input-group input, .input-group textarea, .input-group select { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 8px; padding: 11px 12px; color: var(--fg); font-family: inherit; font-size: 14px; width: 100%; }
+  .input-group input, .input-group textarea, .input-group select { 
+    background: rgba(0,0,0,0.5); 
+    border: 1px solid var(--glass-border); 
+    border-radius: 8px; 
+    padding: 11px 12px; 
+    color: var(--fg); 
+    font-family: inherit; 
+    font-size: 14px; 
+    width: 100%;
+  }
 
-  #auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
-  .auth-box { width: 100%; max-width: 400px; background: rgba(20,20,25,0.96); border: 1px solid var(--primary); border-radius: 18px; padding: 22px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
+  /* Auth Modal */
+  #auth-overlay { 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.85); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 100; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 16px; 
+    overflow-y: auto;
+  }
+  .auth-box { 
+    width: 100%; 
+    max-width: 400px; 
+    background: rgba(20,20,25,0.96); 
+    border: 1px solid var(--primary); 
+    border-radius: 18px; 
+    padding: 22px 18px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+  }
 
   .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 12px; }
   .styled-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: right; min-width: 720px; }
   .styled-table th, .styled-table td { padding: 10px 12px; border-bottom: 1px solid var(--glass-border); vertical-align: middle; }
   .styled-table th { background: rgba(59, 130, 246, 0.2); color: var(--primary); }
 
-  .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+  }
   .status-online { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
   .status-offline { background: rgba(255, 255, 255, 0.08); color: var(--fg-faint); border: 1px solid rgba(255, 255, 255, 0.1); }
   .status-banned { background: rgba(239, 68, 68, 0.25); color: #f87171; border: 1px solid #ef4444; }
 
-  .btn-action-ban { background: rgba(239, 68, 68, 0.25); border: 1px solid #ef4444; color: #ef4444; padding: 5px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+  /* Admin Action Buttons */
+  .btn-action-ban {
+    background: rgba(239, 68, 68, 0.25);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+  }
   .btn-action-ban:hover { background: #ef4444; color: #fff; }
-  .btn-action-unban { background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; color: #4ade80; padding: 5px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+
+  .btn-action-unban {
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid #22c55e;
+    color: #4ade80;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+  }
   .btn-action-unban:hover { background: #22c55e; color: #111; }
-  .btn-action-punish { background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #f59e0b; padding: 5px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; transition: 0.2s; margin: 0 2px; }
+
+  .btn-action-punish {
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid #f59e0b;
+    color: #f59e0b;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    margin: 0 2px;
+  }
   .btn-action-punish:hover { background: #f59e0b; color: #111; }
-  .btn-action-delete { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--glass-border); color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+  
+  .btn-action-delete {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-border);
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+  }
   .btn-action-delete:hover { background: #ef4444; }
 
   .empty-state { text-align: center; padding: 25px 15px; color: var(--fg-faint); font-size: 14px; }
   .foot { text-align: center; padding: 24px 14px; margin-top: 30px; background: rgba(10, 9, 8, 0.95); border-top: 1px solid var(--glass-border); font-size: 13px; color: var(--fg-faint); line-height: 1.6; }
   #admin-panel { display: none; padding: 20px 16px; background: rgba(0,0,0,0.92); border: 1px solid var(--primary); border-radius: 14px; margin-top: 30px; }
-  #admin-status{font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:16px}
-  #admin-status.ok{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.4)}
-  #admin-status.bad{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.4)}
-  .item-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--glass-border)}
-  .item-row:last-child{border-bottom:none}
-  .item-actions{display:flex;gap:6px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -128,31 +307,39 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
+  <!-- نافذة تسجيل الدخول والحساب -->
   <div id="auth-overlay" style="display: none;">
     <div class="auth-box">
       <h2 id="auth-title" style="text-align: center; margin-top:0; color: var(--primary); font-size: 20px;">تسجيل دخول الطالب</h2>
+      
       <form class="upload-form" onsubmit="handleAuth(event)">
         <div class="input-group" id="name-group">
           <label>الاسم الكامل</label>
           <input type="text" id="auth-name" placeholder="مثال: محمد أحمد">
         </div>
+        
         <div class="input-group" id="phone-group">
           <label>رقم الهاتف (واتساب)</label>
           <input type="tel" id="auth-phone" placeholder="01xxxxxxxxx">
         </div>
+
         <div class="input-group">
           <label>البريد الإلكتروني</label>
           <input type="email" id="auth-email" placeholder="student@example.com" required>
         </div>
+        
         <div class="input-group" id="pass-group">
           <label>كلمة المرور (6 أحرف على الأقل)</label>
           <input type="password" id="auth-pass" placeholder="••••••••" minlength="6">
         </div>
+        
         <div id="forgot-pass-wrap" style="text-align: left;">
-          <a href="javascript:void(0)" onclick="handleForgotPassword()" style="color: var(--fg-soft); font-size: 12px; text-decoration: underline;">نسيت كلمة المرور؟</a>
+          <a href="javascript:void(0)" onclick="handleForgotPassword()" style="color: var(--fg-soft); font-size: 12px; text-decoration: underline;">نسيت كلمة المرور؟ (واتساب)</a>
         </div>
+
         <button class="pill" type="submit" id="auth-submit-btn" style="width:100%; height:42px; margin-top:6px; font-size: 15px;">دخول</button>
       </form>
+      
       <p style="text-align:center; font-size:13px; margin-top:14px; color:var(--fg-soft);">
         <span id="auth-switch-text">ليس لديك حساب؟</span>
         <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-switch-link" style="color:var(--primary); font-weight:bold; margin-right:4px;">إنشاء حساب جديد</a>
@@ -169,6 +356,7 @@
 
   <header class="chrome">
     <div class="mark" onclick="showHome()"><span class="mark-star">✦</span> أبحاث الجامعة</div>
+    
     <nav class="nav">
       <div style="color: var(--gold); font-weight: bold; font-size: 13px;" id="user-greeting"></div>
       <button class="pill admin-btn" onclick="checkPassword()">لوحة الإدارة ⚙️</button>
@@ -184,6 +372,7 @@
       <p>منصتكم الموحدة للملخصات، بنك الأسئلة، ولوحة شرف المتفوقين لكل المستويات.</p>
     </section>
 
+    <!-- VIEW 1: Home -->
     <div id="view-home">
       <div class="home-layout">
         <div>
@@ -191,59 +380,93 @@
             <button class="level-tab-btn active" id="tab-lvl-1" onclick="switchLevel(1)">المستوى الأول 🎓</button>
             <button class="level-tab-btn" id="tab-lvl-2" onclick="switchLevel(2)">المستوى الثاني 🚀</button>
           </div>
+
           <h2 class="section-title" id="current-level-heading">مواد المستوى الأول</h2>
           <div class="grid" id="subjects-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));"></div>
-
+          
           <div class="card" style="margin-top: 24px; border-color: rgba(37, 211, 102, 0.4); background: rgba(37, 211, 102, 0.04);">
-            <h3 style="color: #25D366; margin: 0 0 8px; font-size: 18px; display: flex; align-items: center; gap: 8px;"><span>💬</span> صندوق الملاحظات والاستفسارات</h3>
+            <h3 style="color: #25D366; margin: 0 0 8px; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+              <span>💬</span> صندوق الملاحظات والاستفسارات
+            </h3>
             <p style="font-size: 13px; color: var(--fg-soft); margin: 0 0 14px;">عندك سؤال، اقتراح، أو ملاحظة على مادة؟ اكتبها هنا وهتتبعت مباشرة على الواتساب لـ زياد.</p>
             <form onsubmit="sendFeedbackToWhatsApp(event)" class="upload-form">
-              <div class="input-group"><textarea id="feedback-message" rows="3" placeholder="اكتب ملاحظتك أو استفسارك هنا..." required style="resize: vertical;"></textarea></div>
-              <button class="pill" type="submit" style="background: #25D366; color: #111; font-weight: bold; width: fit-content; gap: 6px;"><span>إرسال عبر واتساب</span> ↗</button>
+              <div class="input-group">
+                <textarea id="feedback-message" rows="3" placeholder="اكتب ملاحظتك أو استفسارك هنا..." required style="resize: vertical;"></textarea>
+              </div>
+              <button class="pill" type="submit" style="background: #25D366; color: #111; font-weight: bold; width: fit-content; gap: 6px;">
+                <span>إرسال عبر واتساب</span> ↗
+              </button>
             </form>
           </div>
         </div>
+        
+        <!-- Leaderboard Column -->
         <div>
           <h2 class="section-title" style="color: var(--gold);">🏆 لوحة الشرف</h2>
-          <div class="card leaderboard-card" id="leaderboard-container"><div class="empty-state">جاري تحميل البيانات...</div></div>
+          <div class="card leaderboard-card" id="leaderboard-container">
+            <div class="empty-state">جاري تحميل البيانات...</div>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- VIEW 2: Subject Details -->
     <div id="view-subject" style="display: none;">
       <button class="pill" style="background:#333; margin-bottom:16px;" onclick="showHome()">⭠ رجوع للرئيسية</button>
       <h2 class="section-title" id="subject-title">اسم المادة</h2>
       <p id="subject-desc" style="color: var(--fg-soft); margin-bottom: 24px; font-size: 14px; line-height: 1.6;"></p>
+      
       <h3 style="color: var(--primary); border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; font-size: 17px;">الملخصات والملفات</h3>
       <div class="grid" id="subject-files" style="margin-bottom: 30px;"></div>
+
       <h3 style="color: var(--primary); border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; font-size: 17px;">بنك الأسئلة (MCQ)</h3>
       <div class="grid" id="subject-quizzes"></div>
     </div>
 
+    <!-- Admin Panel -->
     <section id="admin-panel">
-      <h2 style="color: var(--primary); text-align: center; margin-bottom: 8px; font-size: 22px;">لوحة الإدارة 👑</h2>
-      <div id="admin-status">جاري التحقق من صلاحيات الأدمن...</div>
-
+      <h2 style="color: var(--primary); text-align: center; margin-bottom: 24px; font-size: 22px;">لوحة الإدارة 👑</h2>
+      
+      <!-- قسم المتواجدون الآن بالأسماء لايف -->
       <div class="card" style="border-color: var(--online-green); background: rgba(34, 197, 94, 0.05); margin-bottom: 24px;">
-        <h3 style="color: #4ade80; margin: 0 0 10px; font-size: 16px; display:flex; align-items:center; gap:8px;"><span class="pulse-dot"></span> المتواجدون الآن بالأسماء (<span id="admin-online-count">0</span>)</h3>
-        <div id="online-users-list" style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px;"><div class="empty-state" style="padding: 10px;">لا يوجد طلاب متصلين حالياً.</div></div>
+        <h3 style="color: #4ade80; margin: 0 0 10px; font-size: 16px; display:flex; align-items:center; gap:8px;">
+          <span class="pulse-dot"></span> المتواجدون الآن على الموقع بالأسماء (<span id="admin-online-count">0</span>)
+        </h3>
+        <div id="online-users-list" style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px;">
+          <div class="empty-state" style="padding: 10px;">لا يوجد طلاب متصلين حالياً.</div>
+        </div>
       </div>
 
+      <!-- قسم إدارة الطلاب وحظر الحسابات -->
       <div class="card" style="border-color: var(--primary); margin-bottom: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
           <h3 style="color: var(--gold); margin: 0; font-size: 16px;">📋 إدارة الطلاب، الحظر، ولوحة الشرف</h3>
-          <button class="pill" style="background: #dc2626; height: 34px; font-size: 12px;" onclick="resetAllScores()">🔄 تصفير نقاط الجميع</button>
-          <button class="pill" style="background: #7c3aed; height: 34px; font-size: 12px;" onclick="migrateOldUsers()">📥 استيراد الطلاب القدامى (مرة واحدة)</button>
+          <button class="pill" style="background: #dc2626; height: 34px; font-size: 12px;" onclick="resetAllScores()">
+            🔄 تصفير نقاط الجميع وبدء تحدي جديد
+          </button>
         </div>
+        
         <div class="table-responsive">
           <table class="styled-table">
-            <thead><tr><th>#</th><th>اسم الطالب</th><th>الحالة</th><th>رقم الهاتف</th><th>البريد الإلكتروني</th><th>النقاط</th><th>إجراءات</th></tr></thead>
-            <tbody id="students-table-body"><tr><td colspan="7" style="text-align:center;">جاري جلب البيانات...</td></tr></tbody>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>اسم الطالب</th>
+                <th>الحالة</th>
+                <th>رقم الهاتف</th>
+                <th>البريد الإلكتروني</th>
+                <th>النقاط</th>
+                <th>إجراءات الحظر والعقاب</th>
+              </tr>
+            </thead>
+            <tbody id="students-table-body">
+              <tr><td colspan="7" style="text-align:center;">جاري جلب البيانات...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
 
-      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-bottom:24px;">
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
         <div class="card" style="border-color: #f59e0b; background: transparent;">
           <h3 style="color: #f59e0b; font-size: 16px;">إرسال تنبيه مباشر 🚨</h3>
           <form class="upload-form" onsubmit="updateAlert(event)">
@@ -251,6 +474,7 @@
             <button class="pill" type="submit" style="background: #f59e0b; color:#111;">نشر لكل الدفعة</button>
           </form>
         </div>
+
         <div class="card" style="border-color: #ff9800; background: transparent;">
           <h3 style="color: #ff9800; font-size: 16px;">إضافة مادة جديدة</h3>
           <form class="upload-form" onsubmit="addSubject(event)">
@@ -263,6 +487,7 @@
             <button class="pill" type="submit" style="background: #ff9800;">إضافة المادة</button>
           </form>
         </div>
+
         <div class="card" style="border-color: var(--primary); background: transparent;">
           <h3 style="font-size: 16px;">رفع ملف لمادة</h3>
           <form class="upload-form" onsubmit="addFile(event)">
@@ -272,6 +497,7 @@
             <button class="pill" type="submit">نشر الملف</button>
           </form>
         </div>
+
         <div class="card" style="border-color: #4CAF50; background: transparent;">
           <h3 style="color: #4CAF50; font-size: 16px;">إضافة سؤال (MCQ)</h3>
           <form class="upload-form" onsubmit="addQuiz(event)">
@@ -291,18 +517,16 @@
           </form>
         </div>
       </div>
-
-      <div class="card" style="border-color: var(--glass-border);">
-        <h3 style="font-size:16px;">📚 إدارة المحتوى الحالي (تعديل/حذف)</h3>
-        <div id="content-manager"></div>
-      </div>
     </section>
   </main>
 
-  <footer class="foot">تم التطوير والتنسيق لخدمة طلاب قسم المساحة ونظم المعلومات الجغرافية.<br>إدارة وتنظيم: زياد &copy; 2026</footer>
+  <footer class="foot">
+    تم التطوير والتنسيق لخدمة طلاب قسم المساحة ونظم المعلومات الجغرافية.<br>
+    إدارة وتنظيم: زياد &copy; 2026
+  </footer>
 
   <script>
-    const ADMIN_WHATSAPP_NUMBER = "201006109851";
+    const ADMIN_WHATSAPP_NUMBER = "201006109851"; 
 
     const firebaseConfig = {
       apiKey: "AIzaSyB6FXWiprXlv6eoLhRIDrwyzKmR9cf3F8Y",
@@ -313,55 +537,51 @@
       messagingSenderId: "160054277275",
       appId: "1:160054277275:web:79482938bc46e33c52c23e"
     };
+
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const database = firebase.database();
 
     let currentUser = null;
+    let currentStudentData = null;
     let isRegisterMode = false;
     let activeLevel = 1;
     let onlineUsersMap = {};
-    let isAdmin = false;
-    let answeredMap = {}; // quizId -> true, for the current user
 
-    // in-memory content mirrors of Firebase (kept in sync via listeners)
-    let subjectsData = {}; // id -> {name, desc, level}
-    let filesData = {};    // id -> {subjectId, title, link}
-    let quizzesData = {};  // id -> {subjectId, q, opt1..4, ans}
-    let currentSubjectId = null;
-
-    /* ================= AUTH ================= */
     auth.onAuthStateChanged((user) => {
       if (user) {
-        currentUser = user;
-        Promise.all([
-          database.ref('moderation/' + user.uid).once('value'),
-          database.ref('admins/' + user.uid).once('value')
-        ]).then(([modSnap, adminSnap]) => {
-          const mod = modSnap.val();
-          if (mod && mod.isBanned) {
-            alert(`⚠️ تم حظر حسابك من قِبل الإدارة!\nالسبب: ${mod.banReason || 'مخالفة الشروط'}\nللتواصل مع الإدارة عبر واتساب.`);
+        // فحص ما إذا كان الطالب محظوراً
+        database.ref('users/' + user.uid).once('value', (snap) => {
+          const val = snap.val();
+          if (val && val.isBanned) {
+            alert(`⚠️ تم حظر حسابك من قِبل الإدارة!\nالسبب: ${val.banReason || 'مخالفة الشروط'}\nللتواصل مع الإدارة عبر واتساب.`);
             logoutStudent();
             return;
           }
-          isAdmin = !!(adminSnap.val());
+          currentUser = user;
           document.getElementById('auth-overlay').style.display = 'none';
           loadStudentData(user.uid);
         });
       } else {
         currentUser = null;
-        isAdmin = false;
         document.getElementById('auth-overlay').style.display = 'flex';
         document.getElementById('user-greeting').innerText = '';
       }
     });
 
-    function setupPresence(uid, name, phone) {
+    function setupPresence(uid, userData) {
       const myStatusRef = database.ref('online_users/' + uid);
-      database.ref('.info/connected').on('value', (snap) => {
+      const connectedRef = database.ref('.info/connected');
+
+      connectedRef.on('value', (snap) => {
         if (snap.val() === true) {
           myStatusRef.onDisconnect().remove();
-          myStatusRef.set({ name, phone: phone || '', lastSeen: firebase.database.ServerValue.TIMESTAMP });
+          myStatusRef.set({
+            name: userData.name,
+            phone: userData.phone || '',
+            email: userData.email || '',
+            lastSeen: firebase.database.ServerValue.TIMESTAMP
+          });
         }
       });
     }
@@ -370,16 +590,24 @@
       database.ref('online_users').on('value', (snap) => {
         onlineUsersMap = snap.val() || {};
         const count = Object.keys(onlineUsersMap).length;
+        
         const adminCountEl = document.getElementById('admin-online-count');
         if (adminCountEl) adminCountEl.innerText = count;
+
         const listDiv = document.getElementById('online-users-list');
         if (listDiv) {
+          listDiv.innerHTML = '';
           if (count === 0) {
             listDiv.innerHTML = '<div class="empty-state" style="padding: 10px;">لا يوجد طلاب متصلين حالياً.</div>';
           } else {
-            listDiv.innerHTML = Object.values(onlineUsersMap).map(u =>
-              `<div style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); padding: 6px 12px; border-radius: 8px; color: #4ade80;">🟢 <strong>${escapeHtml(u.name)}</strong> (${escapeHtml(u.phone || 'بدون هاتف')})</div>`
-            ).join('');
+            for (let uid in onlineUsersMap) {
+              const u = onlineUsersMap[uid];
+              listDiv.innerHTML += `
+                <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); padding: 6px 12px; border-radius: 8px; color: #4ade80;">
+                  🟢 <strong>${u.name}</strong> (${u.phone || 'بدون هاتف'})
+                </div>
+              `;
+            }
           }
         }
       });
@@ -406,62 +634,59 @@
       if (isRegisterMode) {
         if (!name) return alert("يرجى كتابة الاسم بالكامل.");
         if (!phone || phone.length < 10) return alert("يرجى إدخال رقم هاتف صحيح.");
+
         try {
-          const snapshot = await database.ref('profiles').orderByChild('phone').equalTo(phone).once('value');
-          if (snapshot.exists()) return alert("عذراً، هذا الرقم مسجل به حساب بالفعل!");
+          const snapshot = await database.ref('users').orderByChild('phone').equalTo(phone).once('value');
+          if (snapshot.exists()) {
+            return alert("عذراً، هذا الرقم مسجل به حساب بالفعل! لا يمكن إنشاء أكثر من حساب بنفس الرقم.");
+          }
+
           const res = await auth.createUserWithEmailAndPassword(email, pass);
-          const uid = res.user.uid;
-          await Promise.all([
-            database.ref('profiles/' + uid).set({ name, phone, email, createdAt: Date.now() }),
-            database.ref('scores/' + uid).set(0),
-            database.ref('moderation/' + uid).set({ isBanned: false })
-          ]);
-        } catch (err) { alert(err.message); }
+          await database.ref('users/' + res.user.uid).set({
+            name: name,
+            phone: phone,
+            email: email,
+            score: 0,
+            isBanned: false,
+            createdAt: Date.now()
+          });
+        } catch (err) {
+          alert(err.message);
+        }
       } else {
         auth.signInWithEmailAndPassword(email, pass).catch((err) => alert(err.message));
       }
     }
 
+    // استعادة كلمة المرور عبر واتساب مباشر مع الليدر
     function handleForgotPassword() {
       const email = document.getElementById('auth-email').value.trim();
-      if (!email) return alert('اكتب بريدك الإلكتروني في الحقل فوق الأول، بعدين دوس تاني.');
-      auth.sendPasswordResetEmail(email).then(() => {
-        alert('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.');
-      }).catch(err => {
-        alert('تعذر الإرسال: ' + err.message + '\nممكن تتواصل مع زياد على واتساب بدلاً من ذلك.');
-        const text = `السلام عليكم يا زياد، أنا نسيت كلمة المرور الخاصة بحسابي.\nبريدي الإلكتروني: ${email}`;
-        window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
-      });
+      const text = `السلام عليكم يا زياد، أنا نسيت كلمة المرور الخاصة بحسابي على منصة أبحاث الجامعة.\nبريدي الإلكتروني هو: ${email || '(لم يحدد)'}`;
+      window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
     }
 
     function loadStudentData(uid) {
-      database.ref('profiles/' + uid).on('value', (snap) => {
-        const p = snap.val();
-        if (p) document.getElementById('user-greeting').innerText = `👤 ${p.name}`;
-      });
-      database.ref('moderation/' + uid).on('value', (snap) => {
-        const mod = snap.val();
-        if (mod && mod.isBanned) {
-          alert(`⚠️ تم حظرك من المنصة!\nالسبب: ${mod.banReason || ''}`);
-          logoutStudent();
+      database.ref('users/' + uid).on('value', (snap) => {
+        currentStudentData = snap.val();
+        if (currentStudentData) {
+          if (currentStudentData.isBanned) {
+            alert(`⚠️ تم حظرك من المنصة!\nالسبب: ${currentStudentData.banReason}`);
+            logoutStudent();
+            return;
+          }
+          document.getElementById('user-greeting').innerText = `👤 ${currentStudentData.name}`;
+          setupPresence(uid, currentStudentData);
         }
-      });
-      database.ref('answered/' + uid).on('value', (snap) => {
-        answeredMap = snap.val() || {};
-        if (currentSubjectId) renderSubjectQuizzes(currentSubjectId);
-      });
-      database.ref('profiles/' + uid).once('value').then(snap => {
-        const p = snap.val();
-        if (p) setupPresence(uid, p.name, p.phone);
       });
       listenToLeaderboard();
       listenToAlerts();
       listenToOnlinePresence();
-      listenToContent();
     }
 
     function logoutStudent() {
-      if (currentUser) database.ref('online_users/' + currentUser.uid).remove();
+      if (currentUser) {
+        database.ref('online_users/' + currentUser.uid).remove();
+      }
       auth.signOut();
     }
 
@@ -469,164 +694,222 @@
       e.preventDefault();
       const msg = document.getElementById('feedback-message').value.trim();
       if (!msg) return;
-      database.ref('profiles/' + (currentUser ? currentUser.uid : '')).once('value').then(snap => {
-        const p = snap.val() || {};
-        const text = `📌 *ملاحظة جديدة من منصة المساحة ونظم المعلومات:*\n\n👤 *اسم الطالب:* ${p.name || 'غير معروف'}\n📞 *رقم الهاتف:* ${p.phone || 'غير محدد'}\n📝 *الملاحظة:* ${msg}`;
-        window.open(`https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
-        document.getElementById('feedback-message').value = '';
-      });
+
+      const studentName = currentStudentData ? currentStudentData.name : "طالب بالمنصة";
+      const studentPhone = currentStudentData ? (currentStudentData.phone || "غير محدد") : "غير محدد";
+
+      const text = `📌 *ملاحظة جديدة من منصة المساحة ونظم المعلومات:*\n\n` +
+                   `👤 *اسم الطالب:* ${studentName}\n` +
+                   `📞 *رقم الهاتف:* ${studentPhone}\n` +
+                   `📝 *الملاحظة:* ${msg}`;
+
+      const url = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      document.getElementById('feedback-message').value = '';
     }
 
-    /* ================= LEADERBOARD + STUDENTS TABLE ================= */
     function listenToLeaderboard() {
-      function refreshAll() {
-        database.ref('profiles').once('value', profSnap => {
-          database.ref('scores').once('value', scoreSnap => {
-            database.ref('moderation').once('value', modSnap => {
-              const profiles = profSnap.val() || {};
-              const scores = scoreSnap.val() || {};
-              const mods = modSnap.val() || {};
-              let list = Object.keys(profiles).map(uid => ({
-                uid, name: profiles[uid].name, phone: profiles[uid].phone, email: profiles[uid].email,
-                score: scores[uid] || 0, isBanned: !!(mods[uid] && mods[uid].isBanned), banReason: mods[uid] && mods[uid].banReason
-              }));
-              let activeList = list.filter(u => !u.isBanned).sort((a,b) => b.score - a.score);
-              renderLeaderboard(activeList);
-              list.sort((a,b) => b.score - a.score);
-              renderStudentsTable(list);
-            });
-          });
-        });
-      }
-      database.ref('profiles').on('value', refreshAll);
-      database.ref('scores').on('value', refreshAll);
-      database.ref('moderation').on('value', refreshAll);
+      database.ref('users').on('value', (snapshot) => {
+        let users = snapshot.val();
+        let list = [];
+        for (let id in users) {
+          list.push({ uid: id, ...users[id] });
+        }
+        // ترتيب المتصدرين (استبعاد المحظورين من لوحة الشرف)
+        let activeList = list.filter(u => !u.isBanned);
+        activeList.sort((a, b) => (b.score || 0) - (a.score || 0));
+        renderLeaderboard(activeList);
+
+        // جدول الإدارة يعرض الجميع بما فيهم المحظورين
+        list.sort((a, b) => (b.score || 0) - (a.score || 0));
+        renderStudentsTable(list);
+      });
     }
 
     function renderLeaderboard(board) {
       const container = document.getElementById('leaderboard-container');
+      container.innerHTML = '';
       let top = board.slice(0, 5);
-      if (top.length === 0) { container.innerHTML = '<div class="empty-state">لا توجد نتائج حتى الآن.</div>'; return; }
-      container.innerHTML = top.map((s, idx) => {
+      if (top.length === 0) {
+        container.innerHTML = '<div class="empty-state">لا توجد نتائج حتى الآن.</div>';
+        return;
+      }
+      top.forEach((s, idx) => {
         let medal = idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : `${idx + 1}.`;
-        return `<div class="rank-row"><div class="rank-num">${medal}</div><div class="rank-name">${escapeHtml(s.name)}</div><div class="rank-score">${s.score} ن</div></div>`;
-      }).join('');
+        container.innerHTML += `
+          <div class="rank-row">
+            <div class="rank-num">${medal}</div>
+            <div class="rank-name">${s.name}</div>
+            <div class="rank-score">${s.score || 0} ن</div>
+          </div>
+        `;
+      });
     }
 
     function renderStudentsTable(users) {
       const tbody = document.getElementById('students-table-body');
-      if (users.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">لم يسجل أي طالب بعد.</td></tr>'; return; }
-      tbody.innerHTML = users.map((u, index) => {
-        const online = onlineUsersMap && onlineUsersMap[u.uid];
-        let statusBadge = u.isBanned
-          ? `<span class="status-badge status-banned" title="سبب الحظر: ${escapeHtml(u.banReason || 'بدون سبب')}">⛔ محظور</span>`
-          : online ? `<span class="status-badge status-online">🟢 متصل الآن</span>` : `<span class="status-badge status-offline">⚪ غير متصل</span>`;
-        const banBtn = u.isBanned
-          ? `<button class="btn-action-unban" onclick="unbanStudent('${u.uid}','${escapeAttr(u.name)}')">🟢 فك الحظر</button>`
-          : `<button class="btn-action-ban" onclick="banStudent('${u.uid}','${escapeAttr(u.name)}')">⛔ حظر</button>`;
-        return `<tr>
+      tbody.innerHTML = '';
+      if (users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">لم يسجل أي طالب بعد.</td></tr>';
+        return;
+      }
+      users.forEach((u, index) => {
+        const isOnline = onlineUsersMap && onlineUsersMap[u.uid];
+        let statusBadge = '';
+        if (u.isBanned) {
+          statusBadge = `<span class="status-badge status-banned" title="سبب الحظر: ${u.banReason || 'بدون سبب'}">⛔ محظور</span>`;
+        } else if (isOnline) {
+          statusBadge = `<span class="status-badge status-online">🟢 متصل الآن</span>`;
+        } else {
+          statusBadge = `<span class="status-badge status-offline">⚪ غير متصل</span>`;
+        }
+
+        const banButton = u.isBanned 
+          ? `<button class="btn-action-unban" onclick="unbanStudent('${u.uid}', '${u.name}')">🟢 فك الحظر</button>`
+          : `<button class="btn-action-ban" onclick="banStudent('${u.uid}', '${u.name}')">⛔ حظر</button>`;
+
+        tbody.innerHTML += `
+          <tr>
             <td>${index + 1}</td>
-            <td style="font-weight:bold;">${escapeHtml(u.name)}</td>
+            <td style="font-weight:bold;">${u.name}</td>
             <td>${statusBadge}</td>
-            <td style="direction:ltr; text-align:right;">${escapeHtml(u.phone || '-')}</td>
-            <td style="color:var(--primary);">${escapeHtml(u.email)}</td>
-            <td><strong style="color:var(--gold);">${u.score}</strong></td>
-            <td>${banBtn}
-              <button class="btn-action-punish" onclick="punishStudent('${u.uid}','${escapeAttr(u.name)}')" title="تصفير نقاط الطالب">🔄 تصفير</button>
-              <button class="btn-action-delete" onclick="deleteStudent('${u.uid}','${escapeAttr(u.name)}')" title="حذف حساب الطالب">🗑️ حذف</button>
+            <td style="direction:ltr; text-align:right;">${u.phone || '-'}</td>
+            <td style="color:var(--primary);">${u.email}</td>
+            <td><strong style="color:var(--gold);">${u.score || 0}</strong></td>
+            <td>
+              ${banButton}
+              <button class="btn-action-punish" onclick="punishStudent('${u.uid}', '${u.name}')" title="تصفير نقاط الطالب">🔄 تصفير</button>
+              <button class="btn-action-delete" onclick="deleteStudent('${u.uid}', '${u.name}')" title="حذف حساب الطالب تماماً">🗑️ حذف</button>
             </td>
-          </tr>`;
-      }).join('');
+          </tr>
+        `;
+      });
     }
 
+    // حظر حساب مع كتابة السبب
     function banStudent(uid, name) {
       const reason = prompt(`أدخل سبب حظر الطالب (${name}):`, "مخالفة القواعد أو الغش المتكرر");
       if (reason !== null && reason.trim() !== "") {
-        database.ref('moderation/' + uid).update({ isBanned: true, banReason: reason.trim() })
-          .then(() => { database.ref('online_users/' + uid).remove(); alert(`تم حظر الطالب (${name}).`); })
-          .catch(err => alert('فشل: ' + err.message + ' (تأكد إنك مسجل دخول بحساب الأدمن)'));
+        database.ref('users/' + uid).update({
+          isBanned: true,
+          banReason: reason.trim(),
+          score: 0
+        }).then(() => {
+          // طرد فوراً إذا كان متصلاً
+          database.ref('online_users/' + uid).remove();
+          alert(`تم حظر الطالب (${name}) بنجاح.\nالسبب: ${reason}`);
+        }).catch(err => alert(err.message));
       }
     }
+
+    // فك الحظر
     function unbanStudent(uid, name) {
-      if (confirm(`فك الحظر عن (${name})؟`)) {
-        database.ref('moderation/' + uid).update({ isBanned: false, banReason: null })
-          .then(() => alert(`تم فك الحظر عن (${name}).`)).catch(err => alert('فشل: ' + err.message));
+      if (confirm(`هل تريد فك الحظر عن الطالب (${name}) والسماح له بالدخول مجدداً؟`)) {
+        database.ref('users/' + uid).update({
+          isBanned: false,
+          banReason: null
+        }).then(() => {
+          alert(`تم فك الحظر عن الطالب (${name}) بنجاح.`);
+        }).catch(err => alert(err.message));
       }
     }
+
     function punishStudent(uid, name) {
-      if (confirm(`تصفير نقاط (${name})؟`)) {
-        database.ref('scores/' + uid).set(0).then(() => alert(`تم تصفير نقاط (${name}).`)).catch(err => alert('فشل: ' + err.message));
+      if (confirm(`هل أنت متأكد من تصفير نقاط الطالب (${name}) كعقاب له؟`)) {
+        database.ref('users/' + uid).update({ score: 0 })
+          .then(() => alert(`تم تصفير نقاط الطالب (${name}) بنجاح.`))
+          .catch((err) => alert(err.message));
       }
     }
+
     function deleteStudent(uid, name) {
-      if (confirm(`حذف حساب (${name}) نهائياً من قاعدة البيانات؟\n(ملاحظة: هذا لا يحذف حساب الدخول من Firebase Auth، فقط بياناته من المنصة)`)) {
-        Promise.all([
-          database.ref('profiles/' + uid).remove(),
-          database.ref('scores/' + uid).remove(),
-          database.ref('moderation/' + uid).remove(),
-          database.ref('online_users/' + uid).remove(),
-          database.ref('answered/' + uid).remove()
-        ]).then(() => alert(`تم حذف بيانات (${name}).`)).catch(err => alert('فشل: ' + err.message));
+      if (confirm(`تحذير: هل أنت متأكد من حذف حساب الطالب (${name}) نهائياً؟`)) {
+        database.ref('users/' + uid).remove()
+          .then(() => {
+            database.ref('online_users/' + uid).remove();
+            alert(`تم حذف حساب الطالب (${name}) بنجاح.`);
+          })
+          .catch((err) => alert(err.message));
       }
     }
+
     function resetAllScores() {
-      if (confirm("⚠️ تصفير نقاط جميع الطلاب؟")) {
-        database.ref('scores').once('value', snap => {
+      if (confirm("⚠️ تنبيه هام جداً:\nهل تريد حقاً تصفير نقاط جميع الطلاب في المنصة لبدء دوري جديد؟")) {
+        database.ref('users').once('value', (snapshot) => {
           let updates = {};
-          snap.forEach(child => { updates[child.key] = 0; });
-          database.ref('scores').update(updates).then(() => alert("🎯 تم تصفير نقاط الجميع!")).catch(err => alert('فشل: ' + err.message));
+          snapshot.forEach((child) => {
+            updates[child.key + '/score'] = 0;
+          });
+          database.ref('users').update(updates)
+            .then(() => alert("🎯 تم تصفير نقاط جميع الطلاب بنجاح!"))
+            .catch((err) => alert(err.message));
         });
       }
     }
 
-    // One-time migration: copies old users/{uid} records (name/phone/email/score/isBanned)
-    // into the new separated profiles/scores/moderation nodes. Safe to run more than
-    // once — it won't overwrite a student's current score if they already have one
-    // in the new system (only fills in profile fields that already migrated).
-    function migrateOldUsers() {
-      if (!confirm('استيراد بيانات الطلاب من النظام القديم (users/) إلى النظام الجديد؟\nآمن تمامًا ولن يحذف أي بيانات قديمة.')) return;
-      database.ref('users').once('value').then(snap => {
-        const old = snap.val();
-        if (!old) { alert('لم يتم العثور على بيانات قديمة تحت users/ — إما أنها اتنقلت قبل كده أو المسار فاضي.'); return; }
-        let updates = {}, count = 0;
-        Object.entries(old).forEach(([uid, u]) => {
-          updates['profiles/' + uid] = { name: u.name || '', phone: u.phone || '', email: u.email || '', createdAt: u.createdAt || Date.now() };
-          updates['scores/' + uid] = u.score || 0;
-          updates['moderation/' + uid] = { isBanned: !!u.isBanned, banReason: u.banReason || null };
-          count++;
-        });
-        database.ref().update(updates)
-          .then(() => alert('✅ تم استيراد ' + count + ' طالب بنجاح! لوحة الشرف وجدول الطلاب هيتحدثوا فورًا.'))
-          .catch(err => alert('فشل الاستيراد: ' + err.message + '\n(تأكد إنك مسجل دخول بحساب الأدمن، وإن قواعد الأمان بتسمح بقراءة users/ للأدمن)'));
-      }).catch(err => alert('فشل قراءة البيانات القديمة: ' + err.message));
+    function addPointToStudent() {
+      if (!currentUser) return;
+      database.ref('users/' + currentUser.uid + '/score').transaction((score) => (score || 0) + 1);
     }
 
     function listenToAlerts() {
       database.ref('alert').on('value', (snapshot) => {
         let msg = snapshot.val();
         let banner = document.getElementById("alert-banner");
-        if (msg) { document.getElementById("alert-text-content").innerText = msg; banner.style.display = "block"; }
-        else banner.style.display = "none";
+        if (msg) {
+          document.getElementById("alert-text-content").innerText = msg;
+          banner.style.display = "block";
+        } else {
+          banner.style.display = "none";
+        }
       });
     }
-    function updateAlert(e) {
-      e.preventDefault();
-      database.ref('alert').set(document.getElementById("alert-input").value)
-        .then(() => { e.target.reset(); alert("تم نشر التنبيه!"); })
-        .catch(err => alert('فشل: ' + err.message + ' (تأكد إنك أدمن)'));
-    }
 
-    /* ================= CONTENT (subjects/files/quizzes) — synced with Firebase ================= */
-    function listenToContent() {
-      database.ref('content/subjects').on('value', snap => { subjectsData = snap.val() || {}; onContentChange(); });
-      database.ref('content/files').on('value', snap => { filesData = snap.val() || {}; onContentChange(); });
-      database.ref('content/quizzes').on('value', snap => { quizzesData = snap.val() || {}; onContentChange(); });
-    }
-    function onContentChange() {
-      updateAdminSelects();
-      renderContentManager();
-      if (currentSubjectId) openSubject(currentSubjectId); else renderHome();
-    }
+    let db = [
+      {
+        id: "subj-carto",
+        level: 1,
+        name: "علم الكارتوجرافيا",
+        desc: "دراسة مساقط الخرائط، تمثيل البيانات الجغرافية، وقواعد تصميم الخرائط.",
+        files: [{ title: "ملخص مساقط الخرائط", desc: "شرح شامل لأنواع المساقط وتطبيقاتها.", link: "#" }],
+        quizzes: [
+          { q: "ما هو المسقط الأنسب لخرائط الملاحة البحرية لكونه يحفظ الاتجاهات والزوايا؟", opt1: "مسقط مركاتور", opt2: "المسقط المخروطي", opt3: "مسقط مولفد", opt4: "المسقط المستوي", ans: "1" },
+          { q: "العلم والفن والتقنية المعنية بصناعة الخرائط ودراستها يُعرف بـ:", opt1: "الجيولوجيا", opt2: "علم الكارتوجرافيا", opt3: "الاستشعار عن بعد", opt4: "الجيومورفولوجيا", ans: "2" }
+        ]
+      },
+      {
+        id: "subj-gis-intro",
+        level: 1,
+        name: "مقدمة نظم المعلومات الجغرافية (GIS)",
+        desc: "المفاهيم الأساسية، نماذج البيانات النقطية والخطية (Vector & Raster).",
+        files: [{ title: "مقدمة عن الـ GIS والمكونات الأساسية", desc: "ملخص المحاضرات التمهيدية لنظم المعلومات.", link: "#" }],
+        quizzes: [
+          { q: "البيانات التي تُمثل على شكل خلايا شبكية متساوية الأبعاد تُعرف ببيانات:", opt1: "النموذج الخطي (Vector)", opt2: "النموذج الشبكي (Raster)", opt3: "البيانات الوصفية", opt4: "الجداول المجدولة", ans: "2" }
+        ]
+      },
+      {
+        id: "subj-remote-sensing",
+        level: 2,
+        name: "الاستشعار عن بعد (Remote Sensing)",
+        desc: "تحليل المرئيات الفضائية، النطاقات الطيفية، وتطبيقات الأقمار الصناعية.",
+        files: [{ title: "مقدمة في التحليل الطيفي والمرئيات", desc: "شرح النطاقات الطيفية ومستشعرات الأقمار.", link: "#" }],
+        quizzes: [
+          { q: "الأشعة الكهرومغناطيسية التي تقع خارج نطاق الرؤية البشرية وتستخدم بكثرة في رصد الغطاء النباتي هي:", opt1: "الأشعة تحت الحمراء القريبة (NIR)", opt2: "الضوء الأزرق", opt3: "أشعة غاما", opt4: "الأشعة السينية", ans: "1" }
+        ]
+      },
+      {
+        id: "subj-surveying-adv",
+        level: 2,
+        name: "المساحة المتقدمة والأجهزة",
+        desc: "التوتال ستيشن، أجهزة الجي بي إس التفاضلي (DGPS)، والميزانيات الدقيقة.",
+        files: [{ title: "دليل استخدام أجهزة التوتال ستيشن", desc: "شرح العمل الميداني وطرق الضبط.", link: "#" }],
+        quizzes: [
+          { q: "الجهاز المساحي الذي يجمع بين التيودوليت الإلكتروني وقياس المسافات الكهرومغناطيسي هو:", opt1: "الميزان التلقائي", opt2: "التوتال ستيشن (المحطة المتكاملة)", opt3: "شريط القياس الصلب", opt4: "البوصلة المنشورية", ans: "2" }
+        ]
+      }
+    ];
+
+    let currentSubjectId = null;
 
     function switchLevel(lvl) {
       activeLevel = lvl;
@@ -642,198 +925,148 @@
       document.getElementById('view-subject').style.display = 'none';
       currentSubjectId = null;
       renderHome();
+      updateAdminSelects();
     }
 
     function renderHome() {
       const grid = document.getElementById('subjects-grid');
-      const entries = Object.entries(subjectsData).filter(([id, s]) => s.level === activeLevel);
-      if (entries.length === 0) { grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">لا توجد مواد مضافة في هذا المستوى حالياً.</div>'; return; }
-      grid.innerHTML = entries.map(([id, subj]) => `
-          <div class="card" style="cursor:pointer;" onclick="openSubject('${id}')">
-            <h3 style="margin:0 0 8px; font-size:17px;">📚 ${escapeHtml(subj.name)}</h3>
-            <p style="font-size:13px; color:var(--fg-soft); margin:0 0 16px; line-height:1.5;">${escapeHtml(subj.desc)}</p>
+      grid.innerHTML = '';
+      
+      const filtered = db.filter(s => s.level === activeLevel);
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">لا توجد مواد مضافة في هذا المستوى حالياً.</div>';
+        return;
+      }
+
+      filtered.forEach(subj => {
+        grid.innerHTML += `
+          <div class="card" style="cursor:pointer;" onclick="openSubject('${subj.id}')">
+            <h3 style="margin:0 0 8px; font-size:17px;">📚 ${subj.name}</h3>
+            <p style="font-size:13px; color:var(--fg-soft); margin:0 0 16px; line-height:1.5;">${subj.desc}</p>
             <button class="pill" style="width:100%; height:38px;">تصفح المادة</button>
-          </div>`).join('');
-    }
-
-    function openSubject(id) {
-      if (!subjectsData[id]) { showHome(); return; }
-      currentSubjectId = id;
-      const subj = subjectsData[id];
-      document.getElementById('view-home').style.display = 'none';
-      document.getElementById('hero-section').style.display = 'none';
-      document.getElementById('view-subject').style.display = 'block';
-      document.getElementById('subject-title').innerText = "📚 " + subj.name + (subj.level === 1 ? " [المستوى الأول]" : " [المستوى الثاني]");
-      document.getElementById('subject-desc').innerText = subj.desc;
-
-      const files = Object.entries(filesData).filter(([fid, f]) => f.subjectId === id);
-      document.getElementById('subject-files').innerHTML = files.length === 0
-        ? '<div class="empty-state">لا توجد ملفات حالياً.</div>'
-        : files.map(([fid, f]) => `
-          <div class="card" style="border-right: 4px solid var(--primary); padding:14px;">
-            <h4 style="margin:0 0 10px; font-size:15px;">${escapeHtml(f.title)}</h4>
-            <a href="${escapeAttr(f.link)}" target="_blank" rel="noopener" class="pill" style="width:fit-content; height:32px;">تحميل الملف</a>
-          </div>`).join('');
-
-      renderSubjectQuizzes(id);
-      window.scrollTo(0, 0);
-    }
-
-    function renderSubjectQuizzes(subjectId) {
-      const quizzes = Object.entries(quizzesData).filter(([qid, q]) => q.subjectId === subjectId);
-      const grid = document.getElementById('subject-quizzes');
-      grid.innerHTML = quizzes.length === 0 ? '<div class="empty-state">لا توجد أسئلة حالياً.</div>' : quizzes.map(([qid, q]) => {
-        const already = !!answeredMap[qid];
-        const optsHtml = [1,2,3,4].map(n => `<button class="quiz-btn" ${already?'disabled':''} data-qid="${qid}" data-opt="${n}" onclick="submitAnswer(this)">${escapeHtml(q['opt'+n])}</button>`).join('');
-        return `<div class="card" style="border: 1px dashed var(--glass-border); padding:16px;">
-            <p style="font-weight:700; font-size:15px; margin:0 0 12px; line-height:1.5;">س: ${escapeHtml(q.q)}</p>
-            <div class="quiz-options">${optsHtml}</div>
-            ${already ? '<div class="answered-note">✔️ لقد أجبت على هذا السؤال بالفعل</div>' : ''}
-          </div>`;
-      }).join('');
-    }
-
-    // Correct answers are looked up from the in-memory quizzesData map (kept out of
-    // the HTML markup) rather than printed into onclick attributes — this stops a
-    // casual "View Source" from revealing answers before the student even answers.
-    // NOTE: since a browser-only quiz has no server to grade against, a sufficiently
-    // determined student could still find answers via devtools/network inspection.
-    // Real tamper-proof grading needs a server-side check (e.g. a Cloud Function).
-    function submitAnswer(btn) {
-      const qid = btn.getAttribute('data-qid');
-      const selected = btn.getAttribute('data-opt');
-      const quiz = quizzesData[qid];
-      if (!quiz || !currentUser) return;
-      const uid = currentUser.uid;
-
-      // Prevent scoring twice for the same question (refresh-farming), enforced
-      // again server-side by the "answered/$uid/$qid": "!data.exists()" rule.
-      const answeredRef = database.ref('answered/' + uid + '/' + qid);
-      answeredRef.transaction(existing => existing ? undefined : true, (error, committed) => {
-        const parent = btn.parentElement;
-        const buttons = parent.querySelectorAll('button');
-        buttons.forEach(b => { b.disabled = true; b.style.opacity = "0.5"; b.style.cursor = "not-allowed"; });
-        if (error || !committed) {
-          // already answered previously (or write blocked) — just show correctness, no extra point
-        }
-        const correct = String(quiz.ans) === String(selected);
-        if (correct) {
-          btn.style.background = "#15803d"; btn.style.borderColor = "#22c55e"; btn.style.opacity = "1"; btn.innerHTML += " ✔️";
-          if (committed) database.ref('scores/' + uid).transaction(s => (s || 0) + 1);
-        } else {
-          btn.style.background = "#b91c1c"; btn.style.borderColor = "#ef4444"; btn.style.opacity = "1"; btn.innerHTML += " ❌";
-          const correctBtn = parent.querySelector(`[data-opt="${quiz.ans}"]`);
-          if (correctBtn) { correctBtn.style.background = "#15803d"; correctBtn.style.borderColor = "#22c55e"; correctBtn.style.opacity = "1"; correctBtn.innerHTML += " (الإجابة الصحيحة)"; }
-        }
+          </div>
+        `;
       });
     }
 
-    /* ================= ADMIN GATE + CRUD ================= */
-    function checkPassword() {
-      const p = prompt("أدخل كلمة مرور الإدارة (تنبيه: هذه مجرد شاشة دخول — الصلاحية الحقيقية مرتبطة بحسابك):");
-      if (p === null) return;
-      if (p !== "admin") { alert("كلمة المرور خاطئة!"); return; }
-      document.getElementById("admin-panel").style.display = "block";
-      const statusEl = document.getElementById('admin-status');
-      if (!currentUser) {
-        statusEl.className = 'bad'; statusEl.textContent = '⚠️ لازم تكون مسجّل دخول بحسابك الأدمن عشان تقدر تحفظ أي تعديل.';
-      } else if (isAdmin) {
-        statusEl.className = 'ok'; statusEl.textContent = '✅ حسابك مسجّل كأدمن — كل التعديلات هتتحفظ فعليًا.';
-      } else {
-        statusEl.className = 'bad'; statusEl.textContent = '⚠️ حسابك الحالي مش مسجّل كأدمن في قاعدة البيانات، فأي محاولة حفظ هترفض. تواصل مع زياد لإضافة UID حسابك في /admins.';
-      }
-      updateAdminSelects();
-      renderContentManager();
-      window.scrollTo({ top: document.getElementById("admin-panel").offsetTop, behavior: 'smooth' });
+    function openSubject(id) {
+      currentSubjectId = id;
+      const subj = db.find(s => s.id === id);
+      document.getElementById('view-home').style.display = 'none';
+      document.getElementById('hero-section').style.display = 'none';
+      document.getElementById('view-subject').style.display = 'block';
+      
+      const levelBadge = subj.level === 1 ? " [المستوى الأول]" : " [المستوى الثاني]";
+      document.getElementById('subject-title').innerText = "📚 " + subj.name + levelBadge;
+      document.getElementById('subject-desc').innerText = subj.desc;
+
+      const filesGrid = document.getElementById('subject-files');
+      filesGrid.innerHTML = subj.files.length === 0 ? '<div class="empty-state">لا توجد ملفات حالياً.</div>' : subj.files.map(f => `
+          <div class="card" style="border-right: 4px solid var(--primary); padding:14px;">
+            <h4 style="margin:0 0 10px; font-size:15px;">${f.title}</h4>
+            <a href="${f.link}" target="_blank" class="pill" style="width:fit-content; height:32px;">تحميل الملف</a>
+          </div>
+        `).join('');
+
+      const quizzesGrid = document.getElementById('subject-quizzes');
+      quizzesGrid.innerHTML = subj.quizzes.length === 0 ? '<div class="empty-state">لا توجد أسئلة حالياً.</div>' : subj.quizzes.map((q) => `
+          <div class="card" style="border: 1px dashed var(--glass-border); padding:16px;">
+            <p style="font-weight:700; font-size:15px; margin:0 0 12px; line-height:1.5;">س: ${q.q}</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" onclick="checkAnswer(this, '1', '${q.ans}')">${q.opt1}</button>
+              <button class="quiz-btn" onclick="checkAnswer(this, '2', '${q.ans}')">${q.opt2}</button>
+              <button class="quiz-btn" onclick="checkAnswer(this, '3', '${q.ans}')">${q.opt3}</button>
+              <button class="quiz-btn" onclick="checkAnswer(this, '4', '${q.ans}')">${q.opt4}</button>
+            </div>
+          </div>
+        `).join('');
+      window.scrollTo(0, 0);
     }
 
+    function checkAnswer(btn, selected, correct) {
+      let buttons = btn.parentElement.querySelectorAll('button');
+      buttons.forEach(b => { b.disabled = true; b.style.opacity = "0.5"; b.style.cursor = "not-allowed"; }); 
+      if (selected === correct) {
+        btn.style.background = "#15803d"; 
+        btn.style.borderColor = "#22c55e";
+        btn.style.opacity = "1"; 
+        btn.innerHTML += " ✔️";
+        addPointToStudent();
+      } else {
+        btn.style.background = "#b91c1c"; 
+        btn.style.borderColor = "#ef4444";
+        btn.style.opacity = "1"; 
+        btn.innerHTML += " ❌";
+        buttons[parseInt(correct) - 1].style.background = "#15803d";
+        buttons[parseInt(correct) - 1].style.borderColor = "#22c55e";
+        buttons[parseInt(correct) - 1].style.opacity = "1";
+        buttons[parseInt(correct) - 1].innerHTML += " (الإجابة الصحيحة)";
+      }
+    }
+
+    const ADMIN_PASSWORD = "admin"; 
+    function checkPassword() {
+      if (prompt("أدخل كلمة مرور الإدارة:") === ADMIN_PASSWORD) {
+        document.getElementById("admin-panel").style.display = "block";
+        updateAdminSelects();
+        window.scrollTo({ top: document.getElementById("admin-panel").offsetTop, behavior: 'smooth' });
+      } else { alert("كلمة المرور خاطئة!"); }
+    }
+
+    function updateAlert(e) { 
+      e.preventDefault(); 
+      database.ref('alert').set(document.getElementById("alert-input").value);
+      e.target.reset(); 
+      alert("تم نشر التنبيه لكل الدفعة!");
+    }
+    
     function updateAdminSelects() {
-      let opts = Object.entries(subjectsData).map(([id, s]) => `<option value="${id}">[مستوى ${s.level}] ${escapeHtml(s.name)}</option>`).join('');
-      const fSel = document.getElementById('file-subj-select'), qSel = document.getElementById('quiz-subj-select');
-      if (fSel) fSel.innerHTML = opts;
-      if (qSel) qSel.innerHTML = opts;
+      let opts = db.map(s => `<option value="${s.id}">[مستوى ${s.level}] ${s.name}</option>`).join('');
+      document.getElementById('file-subj-select').innerHTML = opts;
+      document.getElementById('quiz-subj-select').innerHTML = opts;
     }
 
     function addSubject(e) {
       e.preventDefault();
       const level = parseInt(document.getElementById("new-subj-level").value, 10);
-      const name = document.getElementById("new-subj-name").value.trim();
-      const desc = document.getElementById("new-subj-desc").value.trim();
-      const ref = database.ref('content/subjects').push();
-      ref.set({ level, name, desc }).then(() => { e.target.reset(); alert("تمت إضافة المادة!"); }).catch(err => alert('فشل: ' + err.message + ' (تأكد إنك مسجل دخول بحساب الأدمن)'));
-    }
-    function editSubject(id) {
-      const s = subjectsData[id]; if (!s) return;
-      const name = prompt('اسم المادة:', s.name); if (name === null) return;
-      const desc = prompt('وصف المادة:', s.desc); if (desc === null) return;
-      database.ref('content/subjects/' + id).update({ name: name.trim(), desc: desc.trim() }).catch(err => alert('فشل: ' + err.message));
-    }
-    function deleteSubject(id) {
-      if (!confirm('حذف هذه المادة وكل ملفاتها وأسئلتها؟')) return;
-      const updates = { ['content/subjects/' + id]: null };
-      Object.entries(filesData).forEach(([fid, f]) => { if (f.subjectId === id) updates['content/files/' + fid] = null; });
-      Object.entries(quizzesData).forEach(([qid, q]) => { if (q.subjectId === id) updates['content/quizzes/' + qid] = null; });
-      database.ref().update(updates).catch(err => alert('فشل: ' + err.message));
+      const name = document.getElementById("new-subj-name").value;
+      const desc = document.getElementById("new-subj-desc").value;
+      const id = "subj-" + Date.now();
+      
+      db.push({ id, level, name, desc, files: [], quizzes: [] });
+      e.target.reset();
+      alert("تمت إضافة المادة بنجاح!");
+      if (!currentSubjectId) renderHome();
+      updateAdminSelects();
     }
 
     function addFile(e) {
       e.preventDefault();
-      const subjectId = document.getElementById("file-subj-select").value;
-      const title = document.getElementById("file-title").value.trim();
-      const link = document.getElementById("file-link").value.trim();
-      database.ref('content/files').push().set({ subjectId, title, link })
-        .then(() => { e.target.reset(); alert("تم إضافة الملف!"); }).catch(err => alert('فشل: ' + err.message));
-    }
-    function deleteFile(id) {
-      if (!confirm('حذف هذا الملف؟')) return;
-      database.ref('content/files/' + id).remove().catch(err => alert('فشل: ' + err.message));
+      let subj = db.find(s => s.id === document.getElementById("file-subj-select").value);
+      subj.files.push({ title: document.getElementById("file-title").value, link: document.getElementById("file-link").value });
+      e.target.reset();
+      alert("تم إضافة الملف للمادة!");
+      if (currentSubjectId === subj.id) openSubject(subj.id);
+      else if (!currentSubjectId) renderHome();
     }
 
     function addQuiz(e) {
       e.preventDefault();
-      const subjectId = document.getElementById("quiz-subj-select").value;
-      const payload = {
-        subjectId,
-        q: document.getElementById("quiz-q").value.trim(),
-        opt1: document.getElementById("quiz-opt1").value.trim(),
-        opt2: document.getElementById("quiz-opt2").value.trim(),
-        opt3: document.getElementById("quiz-opt3").value.trim(),
-        opt4: document.getElementById("quiz-opt4").value.trim(),
-        ans: document.getElementById("quiz-ans").value
-      };
-      database.ref('content/quizzes').push().set(payload)
-        .then(() => { e.target.reset(); alert("تم إضافة السؤال!"); }).catch(err => alert('فشل: ' + err.message));
+      let subj = db.find(s => s.id === document.getElementById("quiz-subj-select").value);
+      subj.quizzes.push({ 
+        q: document.getElementById("quiz-q").value, 
+        opt1: document.getElementById("quiz-opt1").value, 
+        opt2: document.getElementById("quiz-opt2").value, 
+        opt3: document.getElementById("quiz-opt3").value, 
+        opt4: document.getElementById("quiz-opt4").value, 
+        ans: document.getElementById("quiz-ans").value 
+      });
+      e.target.reset();
+      alert("تم إضافة السؤال للمادة!");
+      if (currentSubjectId === subj.id) openSubject(subj.id);
+      else if (!currentSubjectId) renderHome();
     }
-    function deleteQuiz(id) {
-      if (!confirm('حذف هذا السؤال؟')) return;
-      database.ref('content/quizzes/' + id).remove().catch(err => alert('فشل: ' + err.message));
-    }
-
-    function renderContentManager() {
-      const box = document.getElementById('content-manager');
-      if (!box) return;
-      if (Object.keys(subjectsData).length === 0) { box.innerHTML = '<div class="empty-state">لا يوجد محتوى بعد.</div>'; return; }
-      box.innerHTML = Object.entries(subjectsData).map(([sid, s]) => {
-        const files = Object.entries(filesData).filter(([fid, f]) => f.subjectId === sid);
-        const quizzes = Object.entries(quizzesData).filter(([qid, q]) => q.subjectId === sid);
-        return `
-        <div style="margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--glass-border)">
-          <div class="item-row" style="border:none;padding-top:0">
-            <div><strong>📚 ${escapeHtml(s.name)}</strong> <span style="font-size:11px;color:var(--fg-faint)">[مستوى ${s.level}]</span></div>
-            <div class="item-actions">
-              <button class="btn-action-delete" onclick="editSubject('${sid}')">✏️ تعديل</button>
-              <button class="btn-action-ban" onclick="deleteSubject('${sid}')">🗑️ حذف المادة</button>
-            </div>
-          </div>
-          ${files.map(([fid, f]) => `<div class="item-row"><div style="font-size:13px">📄 ${escapeHtml(f.title)}</div><div class="item-actions"><button class="btn-action-ban" onclick="deleteFile('${fid}')">🗑️</button></div></div>`).join('')}
-          ${quizzes.map(([qid, q]) => `<div class="item-row"><div style="font-size:13px">❓ ${escapeHtml(q.q.slice(0,60))}${q.q.length>60?'…':''}</div><div class="item-actions"><button class="btn-action-ban" onclick="deleteQuiz('${qid}')">🗑️</button></div></div>`).join('')}
-        </div>`;
-      }).join('');
-    }
-
-    /* ================= helpers ================= */
-    function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-    function escapeAttr(s){ return escapeHtml(s).replace(/`/g,'&#96;'); }
 
     window.onload = () => {
       document.getElementById('name-group').style.display = 'none';
