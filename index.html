@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>منصة الدفعة التعليمية | قسم المساحة ونظم المعلومات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -19,6 +19,7 @@
     --glass-bg: rgba(20, 20, 25, 0.75);
     --glass-border: rgba(255, 255, 255, 0.15);
     --gold: #ffd700;
+    --online-green: #22c55e;
   }
   
   * { box-sizing: border-box; }
@@ -49,6 +50,32 @@
   .mark-star { color: var(--primary); font-size: 20px; }
   .nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   
+  /* عداد المتصلين لايف */
+  .live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--online-green);
+    border-radius: 50%;
+    animation: livePulse 1.5s infinite;
+  }
+  @keyframes livePulse {
+    0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  }
+
   .pill { 
     display: inline-flex; 
     align-items: center; 
@@ -68,7 +95,7 @@
     touch-action: manipulation;
   }
   .pill:active { transform: scale(0.97); }
-  .leader-btn { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); }
+  .admin-btn { background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border); }
   .logout-btn { background: #ef4444; }
 
   #alert-banner { 
@@ -91,10 +118,38 @@
   .hero h1 { font-size: clamp(22px, 6vw, 42px); margin: 0 0 10px; line-height: 1.3; font-weight: 900; }
   .hero p { font-size: 14px; margin: 0; color: var(--fg-soft); line-height: 1.6; }
   
+  /* Level Switcher Tabs */
+  .level-tabs {
+    display: flex;
+    gap: 10px;
+    background: rgba(0,0,0,0.4);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    margin-bottom: 20px;
+  }
+  .level-tab-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--fg-soft);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+  }
+  .level-tab-btn.active {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  }
+
   .section-title { font-size: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
   .section-title::before { content: ""; width: 6px; height: 22px; background: var(--primary); border-radius: 3px; }
   
-  /* Main Grid */
   .grid { display: grid; gap: 16px; }
   .home-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
 
@@ -117,7 +172,6 @@
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
   }
   
-  /* Leaderboard */
   .leaderboard-card { border: 1.5px solid var(--gold); background: rgba(255, 215, 0, 0.04); }
   .rank-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 6px; border-bottom: 1px solid var(--glass-border); }
   .rank-row:last-child { border-bottom: none; }
@@ -125,7 +179,6 @@
   .rank-name { flex-grow: 1; font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px; }
   .rank-score { background: var(--primary); padding: 3px 10px; border-radius: 16px; font-size: 12px; font-weight: bold; white-space: nowrap; }
 
-  /* Quiz Buttons */
   .quiz-options { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
   @media (min-width: 600px) {
     .quiz-options { grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -146,7 +199,6 @@
   }
   .quiz-btn:active { background: rgba(255, 255, 255, 0.15); }
 
-  /* Forms */
   .upload-form { display: flex; flex-direction: column; gap: 12px; }
   .input-group { display: flex; flex-direction: column; gap: 6px; }
   .input-group label { font-size: 13px; color: var(--fg-soft); }
@@ -185,12 +237,51 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.7);
   }
 
-  /* Table styling */
   .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 12px; }
-  .styled-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: right; min-width: 500px; }
-  .styled-table th, .styled-table td { padding: 10px 12px; border-bottom: 1px solid var(--glass-border); }
+  .styled-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: right; min-width: 650px; }
+  .styled-table th, .styled-table td { padding: 10px 12px; border-bottom: 1px solid var(--glass-border); vertical-align: middle; }
   .styled-table th { background: rgba(59, 130, 246, 0.2); color: var(--primary); }
 
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+  }
+  .status-online { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+  .status-offline { background: rgba(255, 255, 255, 0.08); color: var(--fg-faint); border: 1px solid rgba(255, 255, 255, 0.1); }
+
+  .btn-action-punish {
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid #f59e0b;
+    color: #f59e0b;
+    padding: 5px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.2s;
+  }
+  .btn-action-punish:hover { background: #f59e0b; color: #111; }
+  
+  .btn-action-delete {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 5px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    margin-right: 4px;
+    transition: 0.2s;
+  }
+  .btn-action-delete:hover { background: #ef4444; color: #fff; }
+
+  .empty-state { text-align: center; padding: 25px 15px; color: var(--fg-faint); font-size: 14px; }
   .foot { text-align: center; padding: 24px 14px; margin-top: 30px; background: rgba(10, 9, 8, 0.95); border-top: 1px solid var(--glass-border); font-size: 13px; color: var(--fg-faint); line-height: 1.6; }
   #admin-panel { display: none; padding: 20px 16px; background: rgba(0,0,0,0.92); border: 1px solid var(--primary); border-radius: 14px; margin-top: 30px; }
 </style>
@@ -250,9 +341,16 @@
 
   <header class="chrome">
     <div class="mark" onclick="showHome()"><span class="mark-star">✦</span> أبحاث الجامعة</div>
+    
     <nav class="nav">
+      <!-- عداد المتصلين لايف -->
+      <div class="live-indicator" title="عدد الطلاب المتواجدين على المنصة حالياً">
+        <span class="pulse-dot"></span>
+        <span id="live-online-counter">1 متصل الآن</span>
+      </div>
+
       <div style="color: var(--gold); font-weight: bold; font-size: 13px;" id="user-greeting"></div>
-      <button class="pill leader-btn" onclick="checkPassword()">Leader ⚙️</button>
+      <button class="pill admin-btn" onclick="checkPassword()">لوحة الإدارة ⚙️</button>
       <button class="pill logout-btn" onclick="logoutStudent()">خروج</button>
     </nav>
   </header>
@@ -262,7 +360,7 @@
   <main class="container">
     <section class="hero" id="hero-section">
       <h1>منصة طلاب المساحة ونظم المعلومات</h1>
-      <p>منصتكم الموحدة للملخصات، بنك الأسئلة، ولوحة شرف المتفوقين.</p>
+      <p>منصتكم الموحدة للملخصات، بنك الأسئلة، ولوحة شرف المتفوقين لكل المستويات.</p>
     </section>
 
     <!-- VIEW 1: Home -->
@@ -270,8 +368,28 @@
       <div class="home-layout">
         <!-- Subjects Column -->
         <div>
-          <h2 class="section-title">المواد الدراسية</h2>
+          <div class="level-tabs">
+            <button class="level-tab-btn active" id="tab-lvl-1" onclick="switchLevel(1)">المستوى الأول 🎓</button>
+            <button class="level-tab-btn" id="tab-lvl-2" onclick="switchLevel(2)">المستوى الثاني 🚀</button>
+          </div>
+
+          <h2 class="section-title" id="current-level-heading">مواد المستوى الأول</h2>
           <div class="grid" id="subjects-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));"></div>
+          
+          <div class="card" style="margin-top: 24px; border-color: rgba(37, 211, 102, 0.4); background: rgba(37, 211, 102, 0.04);">
+            <h3 style="color: #25D366; margin: 0 0 8px; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+              <span>💬</span> صندوق الملاحظات والاستفسارات
+            </h3>
+            <p style="font-size: 13px; color: var(--fg-soft); margin: 0 0 14px;">عندك سؤال، اقتراح، أو ملاحظة على مادة؟ اكتبها هنا وهتتبعت مباشرة على الواتساب لـ زياد.</p>
+            <form onsubmit="sendFeedbackToWhatsApp(event)" class="upload-form">
+              <div class="input-group">
+                <textarea id="feedback-message" rows="3" placeholder="اكتب ملاحظتك أو استفسارك هنا..." required style="resize: vertical;"></textarea>
+              </div>
+              <button class="pill" type="submit" style="background: #25D366; color: #111; font-weight: bold; width: fit-content; gap: 6px;">
+                <span>إرسال عبر واتساب</span> ↗
+              </button>
+            </form>
+          </div>
         </div>
         
         <!-- Leaderboard Column -->
@@ -299,24 +417,42 @@
 
     <!-- Admin Panel -->
     <section id="admin-panel">
-      <h2 style="color: var(--primary); text-align: center; margin-bottom: 24px; font-size: 22px;">لوحة تحكم الليدر 👑</h2>
+      <h2 style="color: var(--primary); text-align: center; margin-bottom: 24px; font-size: 22px;">لوحة الإدارة 👑</h2>
       
-      <!-- جدول عرض الطلاب -->
+      <!-- قسم المتواجدون الآن بالأسماء لايف -->
+      <div class="card" style="border-color: var(--online-green); background: rgba(34, 197, 94, 0.05); margin-bottom: 24px;">
+        <h3 style="color: #4ade80; margin: 0 0 10px; font-size: 16px; display:flex; align-items:center; gap:8px;">
+          <span class="pulse-dot"></span> المتواجدون الآن على الموقع بالأسماء (<span id="admin-online-count">0</span>)
+        </h3>
+        <div id="online-users-list" style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px;">
+          <div class="empty-state" style="padding: 10px;">لا يوجد طلاب متصلين حالياً.</div>
+        </div>
+      </div>
+
+      <!-- قسم إدارة الطلاب الكامل ولوحة الشرف -->
       <div class="card" style="border-color: var(--primary); margin-bottom: 24px;">
-        <h3 style="color: var(--gold); margin-top: 0; font-size: 16px;">📋 بيانات الطلاب المسجلين بالمنصة</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+          <h3 style="color: var(--gold); margin: 0; font-size: 16px;">📋 إدارة الطلاب ولوحة الشرف</h3>
+          <button class="pill" style="background: #dc2626; height: 34px; font-size: 12px;" onclick="resetAllScores()">
+            🔄 تصفير نقاط الجميع وبدء تحدي جديد
+          </button>
+        </div>
+        
         <div class="table-responsive">
           <table class="styled-table">
             <thead>
               <tr>
                 <th>#</th>
                 <th>اسم الطالب</th>
+                <th>الحالة</th>
                 <th>رقم الهاتف</th>
                 <th>البريد الإلكتروني</th>
                 <th>النقاط</th>
+                <th>إجراءات العقاب / الإدارة</th>
               </tr>
             </thead>
             <tbody id="students-table-body">
-              <tr><td colspan="5" style="text-align:center;">جاري جلب البيانات...</td></tr>
+              <tr><td colspan="7" style="text-align:center;">جاري جلب البيانات...</td></tr>
             </tbody>
           </table>
         </div>
@@ -332,16 +468,20 @@
         </div>
 
         <div class="card" style="border-color: #ff9800; background: transparent;">
-          <h3 style="color: #ff9800; font-size: 16px;">إضافة مادة</h3>
+          <h3 style="color: #ff9800; font-size: 16px;">إضافة مادة جديدة</h3>
           <form class="upload-form" onsubmit="addSubject(event)">
+            <select class="input-group" style="padding:10px;" id="new-subj-level" required>
+              <option value="1">المستوى الأول</option>
+              <option value="2">المستوى الثاني</option>
+            </select>
             <input class="input-group" style="padding:10px;" id="new-subj-name" placeholder="اسم المادة" required>
             <input class="input-group" style="padding:10px;" id="new-subj-desc" placeholder="وصف المادة" required>
-            <button class="pill" type="submit" style="background: #ff9800;">إضافة</button>
+            <button class="pill" type="submit" style="background: #ff9800;">إضافة المادة</button>
           </form>
         </div>
 
         <div class="card" style="border-color: var(--primary); background: transparent;">
-          <h3 style="font-size: 16px;">رفع ملف</h3>
+          <h3 style="font-size: 16px;">رفع ملف لمادة</h3>
           <form class="upload-form" onsubmit="addFile(event)">
             <select class="input-group" style="padding:10px;" id="file-subj-select" required></select>
             <input class="input-group" style="padding:10px;" id="file-title" placeholder="عنوان الملف" required>
@@ -374,10 +514,12 @@
 
   <footer class="foot">
     تم التطوير والتنسيق لخدمة طلاب قسم المساحة ونظم المعلومات الجغرافية.<br>
-    إدارة وتنظيم: الليدر زياد سامح &copy; 2026
+    إدارة وتنظيم: زياد &copy; 2026
   </footer>
 
   <script>
+    const ADMIN_WHATSAPP_NUMBER = "201006109851"; 
+
     const firebaseConfig = {
       apiKey: "AIzaSyB6FXWiprXlv6eoLhRIDrwyzKmR9cf3F8Y",
       authDomain: "university-platform-f51a1.firebaseapp.com",
@@ -395,6 +537,8 @@
     let currentUser = null;
     let currentStudentData = null;
     let isRegisterMode = false;
+    let activeLevel = 1;
+    let onlineUsersMap = {};
 
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -407,6 +551,64 @@
         document.getElementById('user-greeting').innerText = '';
       }
     });
+
+    // إعداد نظام التواجد المباشر (Online Presence System)
+    function setupPresence(uid, userData) {
+      const myStatusRef = database.ref('online_users/' + uid);
+      const connectedRef = database.ref('.info/connected');
+
+      connectedRef.on('value', (snap) => {
+        if (snap.val() === true) {
+          // لما يقفل أو النت يقطع يتم حذفه فوراً من السيرفر
+          myStatusRef.onDisconnect().remove();
+          // تسجيله كمتصل حالياً
+          myStatusRef.set({
+            name: userData.name,
+            phone: userData.phone || '',
+            email: userData.email || '',
+            lastSeen: firebase.database.ServerValue.TIMESTAMP
+          });
+        }
+      });
+    }
+
+    // الاستماع المباشر لجميع المتصلين الآن
+    function listenToOnlinePresence() {
+      database.ref('online_users').on('value', (snap) => {
+        onlineUsersMap = snap.val() || {};
+        const count = Object.keys(onlineUsersMap).length;
+        
+        // تحديث العداد العلوي
+        document.getElementById('live-online-counter').innerText = `${count} متصل الآن`;
+        document.getElementById('admin-online-count').innerText = count;
+
+        // تحديث قائمة المتصلين في لوحة الإدارة
+        const listDiv = document.getElementById('online-users-list');
+        listDiv.innerHTML = '';
+        if (count === 0) {
+          listDiv.innerHTML = '<div class="empty-state" style="padding: 10px;">لا يوجد طلاب متصلين حالياً.</div>';
+        } else {
+          for (let uid in onlineUsersMap) {
+            const u = onlineUsersMap[uid];
+            listDiv.innerHTML += `
+              <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); padding: 6px 12px; border-radius: 8px; color: #4ade80;">
+                🟢 <strong>${u.name}</strong> (${u.phone || 'بدون هاتف'})
+              </div>
+            `;
+          }
+        }
+
+        // تحديث حالة الجدول إذا كان مفتوحاً
+        if (currentUser) {
+          database.ref('users').once('value', (s) => {
+            let list = [];
+            s.forEach((c) => list.push({ uid: c.key, ...c.val() }));
+            list.sort((a, b) => (b.score || 0) - (a.score || 0));
+            renderStudentsTable(list);
+          });
+        }
+      });
+    }
 
     function toggleAuthMode() {
       isRegisterMode = !isRegisterMode;
@@ -467,14 +669,37 @@
         currentStudentData = snap.val();
         if (currentStudentData) {
           document.getElementById('user-greeting').innerText = `👤 ${currentStudentData.name}`;
+          setupPresence(uid, currentStudentData);
         }
       });
       listenToLeaderboard();
       listenToAlerts();
+      listenToOnlinePresence();
     }
 
     function logoutStudent() {
+      if (currentUser) {
+        database.ref('online_users/' + currentUser.uid).remove();
+      }
       auth.signOut();
+    }
+
+    function sendFeedbackToWhatsApp(e) {
+      e.preventDefault();
+      const msg = document.getElementById('feedback-message').value.trim();
+      if (!msg) return;
+
+      const studentName = currentStudentData ? currentStudentData.name : "طالب بالمنصة";
+      const studentPhone = currentStudentData ? (currentStudentData.phone || "غير محدد") : "غير محدد";
+
+      const text = `📌 *ملاحظة جديدة من منصة المساحة ونظم المعلومات:*\n\n` +
+                   `👤 *اسم الطالب:* ${studentName}\n` +
+                   `📞 *رقم الهاتف:* ${studentPhone}\n` +
+                   `📝 *الملاحظة:* ${msg}`;
+
+      const url = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      document.getElementById('feedback-message').value = '';
     }
 
     function listenToLeaderboard() {
@@ -514,20 +739,63 @@
       const tbody = document.getElementById('students-table-body');
       tbody.innerHTML = '';
       if (users.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">لم يسجل أي طالب بعد.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">لم يسجل أي طالب بعد.</td></tr>';
         return;
       }
       users.forEach((u, index) => {
+        const isOnline = onlineUsersMap && onlineUsersMap[u.uid];
+        const statusBadge = isOnline 
+          ? `<span class="status-badge status-online">🟢 متصل الآن</span>` 
+          : `<span class="status-badge status-offline">⚪ غير متصل</span>`;
+
         tbody.innerHTML += `
           <tr>
             <td>${index + 1}</td>
             <td style="font-weight:bold;">${u.name}</td>
+            <td>${statusBadge}</td>
             <td style="direction:ltr; text-align:right;">${u.phone || '-'}</td>
             <td style="color:var(--primary);">${u.email}</td>
-            <td><strong>${u.score || 0}</strong></td>
+            <td><strong style="color:var(--gold);">${u.score || 0}</strong></td>
+            <td>
+              <button class="btn-action-punish" onclick="punishStudent('${u.uid}', '${u.name}')" title="تصفير نقاط الطالب كعقاب">🔄 تصفير</button>
+              <button class="btn-action-delete" onclick="deleteStudent('${u.uid}', '${u.name}')" title="حذف حساب الطالب تماماً">🗑️ حذف</button>
+            </td>
           </tr>
         `;
       });
+    }
+
+    function punishStudent(uid, name) {
+      if (confirm(`هل أنت متأكد من تصفير نقاط الطالب (${name}) كعقاب له على الغش؟`)) {
+        database.ref('users/' + uid).update({ score: 0 })
+          .then(() => alert(`تم تصفير نقاط الطالب (${name}) بنجاح وتم إنزاله لآخر الترتيب.`))
+          .catch((err) => alert(err.message));
+      }
+    }
+
+    function deleteStudent(uid, name) {
+      if (confirm(`تحذير: هل أنت متأكد من حذف حساب الطالب (${name}) نهائياً من المنصة ولوحة الشرف؟`)) {
+        database.ref('users/' + uid).remove()
+          .then(() => {
+            database.ref('online_users/' + uid).remove();
+            alert(`تم حذف حساب الطالب (${name}) بنجاح.`);
+          })
+          .catch((err) => alert(err.message));
+      }
+    }
+
+    function resetAllScores() {
+      if (confirm("⚠️ تنبيه هام جداً:\nهل تريد حقاً تصفير نقاط جميع الطلاب في المنصة لبدء دوري/تحدي جديد؟\n(لن يتم حذف الحسابات، سيتم تصفير النقاط فقط).")) {
+        database.ref('users').once('value', (snapshot) => {
+          let updates = {};
+          snapshot.forEach((child) => {
+            updates[child.key + '/score'] = 0;
+          });
+          database.ref('users').update(updates)
+            .then(() => alert("🎯 تم تصفير نقاط جميع الطلاب بنجاح! بدأ التحدي الجديد الآن."))
+            .catch((err) => alert(err.message));
+        });
+      }
     }
 
     function addPointToStudent() {
@@ -551,6 +819,7 @@
     let db = [
       {
         id: "subj-carto",
+        level: 1,
         name: "علم الكارتوجرافيا",
         desc: "دراسة مساقط الخرائط، تمثيل البيانات الجغرافية، وقواعد تصميم الخرائط.",
         files: [{ title: "ملخص مساقط الخرائط", desc: "شرح شامل لأنواع المساقط وتطبيقاتها.", link: "#" }],
@@ -558,10 +827,48 @@
           { q: "ما هو المسقط الأنسب لخرائط الملاحة البحرية لكونه يحفظ الاتجاهات والزوايا؟", opt1: "مسقط مركاتور", opt2: "المسقط المخروطي", opt3: "مسقط مولفد", opt4: "المسقط المستوي", ans: "1" },
           { q: "العلم والفن والتقنية المعنية بصناعة الخرائط ودراستها يُعرف بـ:", opt1: "الجيولوجيا", opt2: "علم الكارتوجرافيا", opt3: "الاستشعار عن بعد", opt4: "الجيومورفولوجيا", ans: "2" }
         ]
+      },
+      {
+        id: "subj-gis-intro",
+        level: 1,
+        name: "مقدمة نظم المعلومات الجغرافية (GIS)",
+        desc: "المفاهيم الأساسية، نماذج البيانات النقطية والخطية (Vector & Raster).",
+        files: [{ title: "مقدمة عن الـ GIS والمكونات الأساسية", desc: "ملخص المحاضرات التمهيدية لنظم المعلومات.", link: "#" }],
+        quizzes: [
+          { q: "البيانات التي تُمثل على شكل خلايا شبكية متساوية الأبعاد تُعرف ببيانات:", opt1: "النموذج الخطي (Vector)", opt2: "النموذج الشبكي (Raster)", opt3: "البيانات الوصفية", opt4: "الجداول المجدولة", ans: "2" }
+        ]
+      },
+      {
+        id: "subj-remote-sensing",
+        level: 2,
+        name: "الاستشعار عن بعد (Remote Sensing)",
+        desc: "تحليل المرئيات الفضائية، النطاقات الطيفية، وتطبيقات الأقمار الصناعية.",
+        files: [{ title: "مقدمة في التحليل الطيفي والمرئيات", desc: "شرح النطاقات الطيفية ومستشعرات الأقمار.", link: "#" }],
+        quizzes: [
+          { q: "الأشعة الكهرومغناطيسية التي تقع خارج نطاق الرؤية البشرية وتستخدم بكثرة في رصد الغطاء النباتي هي:", opt1: "الأشعة تحت الحمراء القريبة (NIR)", opt2: "الضوء الأزرق", opt3: "أشعة غاما", opt4: "الأشعة السينية", ans: "1" }
+        ]
+      },
+      {
+        id: "subj-surveying-adv",
+        level: 2,
+        name: "المساحة المتقدمة والأجهزة",
+        desc: "التوتال ستيشن، أجهزة الجي بي إس التفاضلي (DGPS)، والميزانيات الدقيقة.",
+        files: [{ title: "دليل استخدام أجهزة التوتال ستيشن", desc: "شرح العمل الميداني وطرق الضبط.", link: "#" }],
+        quizzes: [
+          { q: "الجهاز المساحي الذي يجمع بين التيودوليت الإلكتروني وقياس المسافات الكهرومغناطيسي هو:", opt1: "الميزان التلقائي", opt2: "التوتال ستيشن (المحطة المتكاملة)", opt3: "شريط القياس الصلب", opt4: "البوصلة المنشورية", ans: "2" }
+        ]
       }
     ];
 
     let currentSubjectId = null;
+
+    function switchLevel(lvl) {
+      activeLevel = lvl;
+      document.getElementById('tab-lvl-1').classList.toggle('active', lvl === 1);
+      document.getElementById('tab-lvl-2').classList.toggle('active', lvl === 2);
+      document.getElementById('current-level-heading').innerText = lvl === 1 ? "مواد المستوى الأول" : "مواد المستوى الثاني";
+      renderHome();
+    }
 
     function showHome() {
       document.getElementById('view-home').style.display = 'block';
@@ -575,7 +882,15 @@
     function renderHome() {
       const grid = document.getElementById('subjects-grid');
       grid.innerHTML = '';
-      db.forEach(subj => {
+      
+      const filtered = db.filter(s => s.level === activeLevel);
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">لا توجد مواد مضافة في هذا المستوى حالياً.</div>';
+        return;
+      }
+
+      filtered.forEach(subj => {
         grid.innerHTML += `
           <div class="card" style="cursor:pointer;" onclick="openSubject('${subj.id}')">
             <h3 style="margin:0 0 8px; font-size:17px;">📚 ${subj.name}</h3>
@@ -593,7 +908,8 @@
       document.getElementById('hero-section').style.display = 'none';
       document.getElementById('view-subject').style.display = 'block';
       
-      document.getElementById('subject-title').innerText = "📚 " + subj.name;
+      const levelBadge = subj.level === 1 ? " [المستوى الأول]" : " [المستوى الثاني]";
+      document.getElementById('subject-title').innerText = "📚 " + subj.name + levelBadge;
       document.getElementById('subject-desc').innerText = subj.desc;
 
       const filesGrid = document.getElementById('subject-files');
@@ -642,7 +958,7 @@
 
     const ADMIN_PASSWORD = "admin"; 
     function checkPassword() {
-      if (prompt("أدخل كلمة مرور الليدر:") === ADMIN_PASSWORD) {
+      if (prompt("أدخل كلمة مرور الإدارة:") === ADMIN_PASSWORD) {
         document.getElementById("admin-panel").style.display = "block";
         updateAdminSelects();
         window.scrollTo({ top: document.getElementById("admin-panel").offsetTop, behavior: 'smooth' });
@@ -657,14 +973,19 @@
     }
     
     function updateAdminSelects() {
-      let opts = db.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      let opts = db.map(s => `<option value="${s.id}">[مستوى ${s.level}] ${s.name}</option>`).join('');
       document.getElementById('file-subj-select').innerHTML = opts;
       document.getElementById('quiz-subj-select').innerHTML = opts;
     }
 
     function addSubject(e) {
       e.preventDefault();
-      db.push({ id: "subj-" + Date.now(), name: document.getElementById("new-subj-name").value, desc: document.getElementById("new-subj-desc").value, files: [], quizzes: [] });
+      const level = parseInt(document.getElementById("new-subj-level").value, 10);
+      const name = document.getElementById("new-subj-name").value;
+      const desc = document.getElementById("new-subj-desc").value;
+      const id = "subj-" + Date.now();
+      
+      db.push({ id, level, name, desc, files: [], quizzes: [] });
       e.target.reset();
       alert("تمت إضافة المادة بنجاح!");
       if (!currentSubjectId) renderHome();
