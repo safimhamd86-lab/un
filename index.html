@@ -479,7 +479,7 @@
       <!-- زر الملف الشخصي -->
       <div class="user-greeting-btn" onclick="showProfile()" id="user-greeting" title="عرض الملف الشخصي"></div>
       
-      <button class="pill admin-btn" onclick="checkPassword()">لوحة الإدارة ⚙️</button>
+      <button class="pill admin-btn" id="admin-toggle-btn" onclick="toggleAdminPanel()" style="display:none;">لوحة الإدارة ⚙️</button>
       <button class="pill logout-btn" onclick="logoutStudent()">خروج</button>
     </nav>
   </header>
@@ -561,9 +561,14 @@
       <div class="card" style="border-color: var(--primary); margin-bottom: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
           <h3 style="color: var(--gold); margin: 0; font-size: 16px;">📋 إدارة الطلاب ولوحة الشرف</h3>
-          <button class="pill" style="background: #dc2626; height: 34px; font-size: 12px;" onclick="resetAllScores()">
-            🔄 تصفير نقاط الجميع وبدء تحدي جديد
-          </button>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="pill" style="background: #334155; height: 34px; font-size: 12px;" onclick="seedDefaultSubjects()">
+              📥 استيراد المواد الافتراضية
+            </button>
+            <button class="pill" style="background: #dc2626; height: 34px; font-size: 12px;" onclick="resetAllScores()">
+              🔄 تصفير نقاط الجميع وبدء تحدي جديد
+            </button>
+          </div>
         </div>
         
         <div class="table-responsive">
@@ -812,11 +817,20 @@
           }
           document.getElementById('user-greeting').innerHTML = `👤 ${currentStudentData.name}`;
           setupPresence(uid, currentStudentData);
+
+          const adminBtn = document.getElementById('admin-toggle-btn');
+          if (currentStudentData.isAdmin === true) {
+            adminBtn.style.display = 'inline-flex';
+          } else {
+            adminBtn.style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'none';
+          }
         }
       });
       listenToUsersData();
       listenToAlerts();
       listenToOnlinePresence();
+      listenToSubjects();
     }
 
     function logoutStudent() {
@@ -1015,51 +1029,88 @@
       });
     }
 
-    let db = [
-      {
-        id: "subj-carto",
+    // بيانات المواد الافتراضية — تُستخدم مرة واحدة فقط لتعمير قاعدة البيانات
+    // لو لسه فاضية (زر "استيراد المواد الافتراضية" في لوحة الإدارة).
+    const defaultSubjectsSeed = {
+      "subj-carto": {
         level: 1,
         name: "علم الكارتوجرافيا",
         desc: "دراسة مساقط الخرائط، تمثيل البيانات الجغرافية، وقواعد تصميم الخرائط.",
-        files: [{ title: "ملخص مساقط الخرائط", desc: "شرح شامل لأنواع المساقط وتطبيقاتها.", link: "#" }],
-        quizzes: [
-          { q: "ما هو المسقط الأنسب لخرائط الملاحة البحرية لكونه يحفظ الاتجاهات والزوايا؟", opt1: "مسقط مركاتور", opt2: "المسقط المخروطي", opt3: "مسقط مولفد", opt4: "المسقط المستوي", ans: "1" },
-          { q: "العلم والفن والتقنية المعنية بصناعة الخرائط ودراستها يُعرف بـ:", opt1: "الجيولوجيا", opt2: "علم الكارتوجرافيا", opt3: "الاستشعار عن بعد", opt4: "الجيومورفولوجيا", ans: "2" }
-        ]
+        files: { f1: { title: "ملخص مساقط الخرائط", link: "#" } },
+        quizzes: {
+          q1: { q: "ما هو المسقط الأنسب لخرائط الملاحة البحرية لكونه يحفظ الاتجاهات والزوايا؟", opt1: "مسقط مركاتور", opt2: "المسقط المخروطي", opt3: "مسقط مولفد", opt4: "المسقط المستوي", ans: "1" },
+          q2: { q: "العلم والفن والتقنية المعنية بصناعة الخرائط ودراستها يُعرف بـ:", opt1: "الجيولوجيا", opt2: "علم الكارتوجرافيا", opt3: "الاستشعار عن بعد", opt4: "الجيومورفولوجيا", ans: "2" }
+        }
       },
-      {
-        id: "subj-gis-intro",
+      "subj-gis-intro": {
         level: 1,
         name: "مقدمة نظم المعلومات الجغرافية (GIS)",
         desc: "المفاهيم الأساسية، نماذج البيانات النقطية والخطية (Vector & Raster).",
-        files: [{ title: "مقدمة عن الـ GIS والمكونات الأساسية", desc: "ملخص المحاضرات التمهيدية لنظم المعلومات.", link: "#" }],
-        quizzes: [
-          { q: "البيانات التي تُمثل على شكل خلايا شبكية متساوية الأبعاد تُعرف ببيانات:", opt1: "النموذج الخطي (Vector)", opt2: "النموذج الشبكي (Raster)", opt3: "البيانات الوصفية", opt4: "الجداول المجدولة", ans: "2" }
-        ]
+        files: { f1: { title: "مقدمة عن الـ GIS والمكونات الأساسية", link: "#" } },
+        quizzes: {
+          q1: { q: "البيانات التي تُمثل على شكل خلايا شبكية متساوية الأبعاد تُعرف ببيانات:", opt1: "النموذج الخطي (Vector)", opt2: "النموذج الشبكي (Raster)", opt3: "البيانات الوصفية", opt4: "الجداول المجدولة", ans: "2" }
+        }
       },
-      {
-        id: "subj-remote-sensing",
+      "subj-remote-sensing": {
         level: 2,
         name: "الاستشعار عن بعد (Remote Sensing)",
         desc: "تحليل المرئيات الفضائية، النطاقات الطيفية، وتطبيقات الأقمار الصناعية.",
-        files: [{ title: "مقدمة في التحليل الطيفي والمرئيات", desc: "شرح النطاقات الطيفية ومستشعرات الأقمار.", link: "#" }],
-        quizzes: [
-          { q: "الأشعة الكهرومغناطيسية التي تقع خارج نطاق الرؤية البشرية وتستخدم بكثرة في رصد الغطاء النباتي هي:", opt1: "الأشعة تحت الحمراء القريبة (NIR)", opt2: "الضوء الأزرق", opt3: "أشعة غاما", opt4: "الأشعة السينية", ans: "1" }
-        ]
+        files: { f1: { title: "مقدمة في التحليل الطيفي والمرئيات", link: "#" } },
+        quizzes: {
+          q1: { q: "الأشعة الكهرومغناطيسية التي تقع خارج نطاق الرؤية البشرية وتستخدم بكثرة في رصد الغطاء النباتي هي:", opt1: "الأشعة تحت الحمراء القريبة (NIR)", opt2: "الضوء الأزرق", opt3: "أشعة غاما", opt4: "الأشعة السينية", ans: "1" }
+        }
       },
-      {
-        id: "subj-surveying-adv",
+      "subj-surveying-adv": {
         level: 2,
         name: "المساحة المتقدمة والأجهزة",
         desc: "التوتال ستيشن، أجهزة الجي بي إس التفاضلي (DGPS)، والميزانيات الدقيقة.",
-        files: [{ title: "دليل استخدام أجهزة التوتال ستيشن", desc: "شرح العمل الميداني وطرق الضبط.", link: "#" }],
-        quizzes: [
-          { q: "الجهاز المساحي الذي يجمع بين التيودوليت الإلكتروني وقياس المسافات الكهرومغناطيسي هو:", opt1: "الميزان التلقائي", opt2: "التوتال ستيشن (المحطة المتكاملة)", opt3: "شريط القياس الصلب", opt4: "البوصلة المنشورية", ans: "2" }
-        ]
+        files: { f1: { title: "دليل استخدام أجهزة التوتال ستيشن", link: "#" } },
+        quizzes: {
+          q1: { q: "الجهاز المساحي الذي يجمع بين التيودوليت الإلكتروني وقياس المسافات الكهرومغناطيسي هو:", opt1: "الميزان التلقائي", opt2: "التوتال ستيشن (المحطة المتكاملة)", opt3: "شريط القياس الصلب", opt4: "البوصلة المنشورية", ans: "2" }
+        }
       }
-    ];
+    };
 
+    // "db" أصبحت الآن مرآة محلية لبيانات Firebase (subjects) بدل مصفوفة ثابتة،
+    // بحيث أي إضافة/تعديل يحصل من لوحة الإدارة يتخزن بشكل دائم ويظهر لكل الطلاب.
+    let db = [];
+    let subjectsLoaded = false;
     let currentSubjectId = null;
+
+    function listenToSubjects() {
+      database.ref('subjects').on('value', (snapshot) => {
+        const val = snapshot.val() || {};
+        db = Object.keys(val).map(id => {
+          const s = val[id];
+          return {
+            id,
+            level: s.level,
+            name: s.name,
+            desc: s.desc,
+            files: s.files ? Object.keys(s.files).map(k => ({ key: k, ...s.files[k] })) : [],
+            quizzes: s.quizzes ? Object.keys(s.quizzes).map(k => ({ key: k, ...s.quizzes[k] })) : []
+          };
+        });
+        subjectsLoaded = true;
+        if (!currentSubjectId) {
+          renderHome();
+        } else {
+          const stillExists = db.find(s => s.id === currentSubjectId);
+          if (stillExists) openSubject(currentSubjectId); else showHome();
+        }
+        updateAdminSelects();
+      });
+    }
+
+    function seedDefaultSubjects() {
+      if (!currentStudentData || currentStudentData.isAdmin !== true) return;
+      if (db.length > 0) {
+        if (!confirm("توجد مواد بالفعل — هل تريد استيراد المواد الافتراضية فوق الموجود؟")) return;
+      }
+      database.ref('subjects').update(defaultSubjectsSeed)
+        .then(() => alert("تم استيراد المواد الافتراضية بنجاح!"))
+        .catch(err => alert(err.message));
+    }
 
     function switchLevel(lvl) {
       activeLevel = lvl;
@@ -1085,16 +1136,20 @@
       const filtered = db.filter(s => s.level === activeLevel);
       
       if (filtered.length === 0) {
-        grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">لا توجد مواد مضافة في هذا المستوى حالياً.</div>';
+        grid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;">${subjectsLoaded ? 'لا توجد مواد مضافة في هذا المستوى حالياً.' : 'جاري تحميل المواد...'}</div>`;
         return;
       }
 
+      const isAdminHome = currentStudentData && currentStudentData.isAdmin === true;
       filtered.forEach(subj => {
         grid.innerHTML += `
-          <div class="card" style="cursor:pointer;" onclick="openSubject('${subj.id}')">
-            <h3 style="margin:0 0 8px; font-size:17px;">📚 ${subj.name}</h3>
-            <p style="font-size:13px; color:var(--fg-soft); margin:0 0 16px; line-height:1.5;">${subj.desc}</p>
-            <button class="pill" style="width:100%; height:38px;">تصفح المادة</button>
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+              <h3 style="margin:0 0 8px; font-size:17px; cursor:pointer;" onclick="openSubject('${subj.id}')">📚 ${subj.name}</h3>
+              ${isAdminHome ? `<button class="btn-action-delete" onclick="event.stopPropagation(); deleteSubject('${subj.id}', '${subj.name}')" title="حذف المادة">🗑️</button>` : ''}
+            </div>
+            <p style="font-size:13px; color:var(--fg-soft); margin:0 0 16px; line-height:1.5; cursor:pointer;" onclick="openSubject('${subj.id}')">${subj.desc}</p>
+            <button class="pill" style="width:100%; height:38px;" onclick="openSubject('${subj.id}')">تصفح المادة</button>
           </div>
         `;
       });
@@ -1111,18 +1166,26 @@
       document.getElementById('subject-title').innerText = "📚 " + subj.name + levelBadge;
       document.getElementById('subject-desc').innerText = subj.desc;
 
+      const isAdminView = currentStudentData && currentStudentData.isAdmin === true;
+
       const filesGrid = document.getElementById('subject-files');
       filesGrid.innerHTML = subj.files.length === 0 ? '<div class="empty-state">لا توجد ملفات حالياً.</div>' : subj.files.map(f => `
-          <div class="card" style="border-right: 4px solid var(--primary); padding:14px;">
-            <h4 style="margin:0 0 10px; font-size:15px;">${f.title}</h4>
-            <a href="${f.link}" target="_blank" class="pill" style="width:fit-content; height:32px;">تحميل الملف</a>
+          <div class="card" style="border-right: 4px solid var(--primary); padding:14px; flex-direction: row; align-items: center; justify-content: space-between; gap: 10px;">
+            <h4 style="margin:0; font-size:15px;">${f.title}</h4>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <a href="${f.link}" target="_blank" class="pill" style="width:fit-content; height:32px;">تحميل الملف</a>
+              ${isAdminView ? `<button class="btn-action-delete" onclick="deleteFile('${subj.id}','${f.key}')" title="حذف الملف">🗑️</button>` : ''}
+            </div>
           </div>
         `).join('');
 
       const quizzesGrid = document.getElementById('subject-quizzes');
       quizzesGrid.innerHTML = subj.quizzes.length === 0 ? '<div class="empty-state">لا توجد أسئلة حالياً.</div>' : subj.quizzes.map((q) => `
           <div class="card" style="border: 1px dashed var(--glass-border); padding:16px;">
-            <p style="font-weight:700; font-size:15px; margin:0 0 12px; line-height:1.5;">س: ${q.q}</p>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+              <p style="font-weight:700; font-size:15px; margin:0 0 12px; line-height:1.5;">س: ${q.q}</p>
+              ${isAdminView ? `<button class="btn-action-delete" onclick="deleteQuiz('${subj.id}','${q.key}')" title="حذف السؤال">🗑️</button>` : ''}
+            </div>
             <div class="quiz-options">
               <button class="quiz-btn" onclick="checkAnswer(this, '1', '${q.ans}')">${q.opt1}</button>
               <button class="quiz-btn" onclick="checkAnswer(this, '2', '${q.ans}')">${q.opt2}</button>
@@ -1155,13 +1218,20 @@
       }
     }
 
-    const ADMIN_PASSWORD = "admin"; 
-    function checkPassword() {
-      if (prompt("أدخل كلمة مرور الإدارة:") === ADMIN_PASSWORD) {
-        document.getElementById("admin-panel").style.display = "block";
+    function toggleAdminPanel() {
+      // هذا التحقق للواجهة فقط؛ الحماية الحقيقية تتم عبر قواعد أمان Firebase
+      // التي تمنع أي مستخدم ليس isAdmin:true من الكتابة على subjects/alert/users فعلياً.
+      if (!currentStudentData || currentStudentData.isAdmin !== true) {
+        alert("غير مصرح لك بالدخول للوحة الإدارة.");
+        return;
+      }
+      const panel = document.getElementById("admin-panel");
+      const isVisible = panel.style.display === "block";
+      panel.style.display = isVisible ? "none" : "block";
+      if (!isVisible) {
         updateAdminSelects();
-        window.scrollTo({ top: document.getElementById("admin-panel").offsetTop, behavior: 'smooth' });
-      } else { alert("كلمة المرور خاطئة!"); }
+        window.scrollTo({ top: panel.offsetTop, behavior: 'smooth' });
+      }
     }
 
     function updateAlert(e) { 
@@ -1183,39 +1253,65 @@
       const name = document.getElementById("new-subj-name").value;
       const desc = document.getElementById("new-subj-desc").value;
       const id = "subj-" + Date.now();
-      
-      db.push({ id, level, name, desc, files: [], quizzes: [] });
-      e.target.reset();
-      alert("تمت إضافة المادة بنجاح!");
-      if (!currentSubjectId) renderHome();
-      updateAdminSelects();
+
+      database.ref('subjects/' + id).set({ level, name, desc })
+        .then(() => {
+          e.target.reset();
+          alert("تمت إضافة المادة بنجاح!");
+        })
+        .catch(err => alert(err.message));
     }
 
     function addFile(e) {
       e.preventDefault();
-      let subj = db.find(s => s.id === document.getElementById("file-subj-select").value);
-      subj.files.push({ title: document.getElementById("file-title").value, link: document.getElementById("file-link").value });
-      e.target.reset();
-      alert("تم إضافة الملف للمادة!");
-      if (currentSubjectId === subj.id) openSubject(subj.id);
-      else if (!currentSubjectId) renderHome();
+      const subjId = document.getElementById("file-subj-select").value;
+      const title = document.getElementById("file-title").value;
+      const link = document.getElementById("file-link").value;
+
+      database.ref('subjects/' + subjId + '/files').push({ title, link })
+        .then(() => {
+          e.target.reset();
+          alert("تم إضافة الملف للمادة!");
+        })
+        .catch(err => alert(err.message));
     }
 
     function addQuiz(e) {
       e.preventDefault();
-      let subj = db.find(s => s.id === document.getElementById("quiz-subj-select").value);
-      subj.quizzes.push({ 
-        q: document.getElementById("quiz-q").value, 
-        opt1: document.getElementById("quiz-opt1").value, 
-        opt2: document.getElementById("quiz-opt2").value, 
-        opt3: document.getElementById("quiz-opt3").value, 
-        opt4: document.getElementById("quiz-opt4").value, 
-        ans: document.getElementById("quiz-ans").value 
-      });
-      e.target.reset();
-      alert("تم إضافة السؤال للمادة!");
-      if (currentSubjectId === subj.id) openSubject(subj.id);
-      else if (!currentSubjectId) renderHome();
+      const subjId = document.getElementById("quiz-subj-select").value;
+
+      database.ref('subjects/' + subjId + '/quizzes').push({
+        q: document.getElementById("quiz-q").value,
+        opt1: document.getElementById("quiz-opt1").value,
+        opt2: document.getElementById("quiz-opt2").value,
+        opt3: document.getElementById("quiz-opt3").value,
+        opt4: document.getElementById("quiz-opt4").value,
+        ans: document.getElementById("quiz-ans").value
+      })
+        .then(() => {
+          e.target.reset();
+          alert("تم إضافة السؤال للمادة!");
+        })
+        .catch(err => alert(err.message));
+    }
+
+    function deleteFile(subjId, fileKey) {
+      if (!confirm("هل تريد حذف هذا الملف نهائياً؟")) return;
+      database.ref('subjects/' + subjId + '/files/' + fileKey).remove()
+        .catch(err => alert(err.message));
+    }
+
+    function deleteQuiz(subjId, quizKey) {
+      if (!confirm("هل تريد حذف هذا السؤال نهائياً؟")) return;
+      database.ref('subjects/' + subjId + '/quizzes/' + quizKey).remove()
+        .catch(err => alert(err.message));
+    }
+
+    function deleteSubject(subjId, name) {
+      if (!confirm(`تحذير: هل تريد حذف مادة "${name}" بكل ملفاتها وأسئلتها نهائياً؟`)) return;
+      database.ref('subjects/' + subjId).remove()
+        .then(() => { if (currentSubjectId === subjId) showHome(); })
+        .catch(err => alert(err.message));
     }
 
     window.onload = () => {
